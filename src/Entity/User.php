@@ -20,10 +20,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     /**
-     * @var list<string> The user roles
+     * @var int The user role level
      */
-    #[ORM\Column]
-    private array $roles = [];
+    #[ORM\Column(type: "integer")]
+    private ?int $roles = 0;
 
     /**
      * @var string The hashed password
@@ -65,19 +65,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // Convert numeric role to array of role strings
+        $roleLevel = $this->roles ?? 0;
+        $roles = ['ROLE_USER']; // Default role
+        
+        if ($roleLevel >= 1) {
+            $roles[] = 'ROLE_ADMIN';
+        }
+        if ($roleLevel >= 2) {
+            $roles[] = 'ROLE_SUPER_ADMIN';
+        }
 
         return array_unique($roles);
     }
 
     /**
-     * @param list<string> $roles
+     * Set the numeric role level
      */
-    public function setRoles(array $roles): static
+    public function setRoles(int $roleLevel): static
     {
-        $this->roles = $roles;
+        $this->roles = $roleLevel;
 
         return $this;
     }
