@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping\ManyToOne;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -20,10 +21,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     /**
-     * @var int The user role level
+     * @var Roles|null The user role
      */
-    #[ORM\Column(type: "integer")]
-    private ?int $roles = 0;
+    #[ManyToOne(targetEntity: Roles::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Roles $role = null;
 
     /**
      * @var string The hashed password
@@ -65,28 +67,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        // Convert numeric role to array of role strings
-        $roleLevel = $this->roles ?? 0;
+        // Convert role entity to array of role strings
         $roles = ['ROLE_USER']; // Default role
-        
-        if ($roleLevel >= 1) {
-            $roles[] = 'ROLE_ADMIN';
-        }
-        if ($roleLevel >= 2) {
-            $roles[] = 'ROLE_SUPER_ADMIN';
+
+        if ($this->role) {
+            $roles[] = 'ROLE_' . strtoupper($this->role->getName());
         }
 
         return array_unique($roles);
     }
 
     /**
-     * Set the numeric role level
+     * Set the role entity
      */
-    public function setRoles(int $roleLevel): static
+    public function setRole(Roles $role): static
     {
-        $this->roles = $roleLevel;
+        $this->role = $role;
 
         return $this;
+    }
+
+    public function getRole(): ?Roles
+    {
+        return $this->role;
     }
 
     /**
