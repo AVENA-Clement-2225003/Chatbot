@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RegistrationController extends AbstractController
@@ -32,6 +34,20 @@ class RegistrationController extends AbstractController
             return new JsonResponse([
                 'error' => 'Email and password are required',
             ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Validate email
+        $emailConstraint = new Email();
+        $emailErrors = $this->validator->validate($data['email'], $emailConstraint);
+        if (count($emailErrors) > 0) {
+            return new JsonResponse(['error' => 'Invalid email format'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Validate password
+        $passwordConstraint = new Length(['min' => 6]);
+        $passwordErrors = $this->validator->validate($data['password'], $passwordConstraint);
+        if (count($passwordErrors) > 0) {
+            return new JsonResponse(['error' => 'Password must be at least 6 characters long'], Response::HTTP_BAD_REQUEST);
         }
 
         // Check if user already exists
