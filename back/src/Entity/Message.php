@@ -27,6 +27,9 @@ class Message
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $role = null;
+
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
     {
@@ -74,5 +77,16 @@ class Message
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
+        return $this;
     }
 }

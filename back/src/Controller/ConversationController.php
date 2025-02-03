@@ -9,7 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api')]
 class ConversationController extends AbstractController
@@ -57,6 +58,16 @@ class ConversationController extends AbstractController
             'createdAt' => $conversation->getCreatedAt()->format('c'),
             'updatedAt' => $conversation->getUpdatedAt()->format('c'),
         ], Response::HTTP_CREATED);
+    }
+
+    #[Route('/conversations/{id}', name: 'app_conversations_get', methods: ['GET'])]
+    public function get(Conversation $conversation): JsonResponse
+    {
+        if ($conversation->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('You cannot access this conversation');
+        }
+
+        return $this->json($conversation);
     }
 
     #[Route('/conversations/{id}/messages', name: 'app_conversation_messages', methods: ['GET'])]
