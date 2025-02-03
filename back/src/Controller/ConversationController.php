@@ -43,13 +43,23 @@ class ConversationController extends AbstractController
     public function create(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $title = $data['title'] ?? 'New Conversation';
+        if (!isset($data['message'])) {
+            return new JsonResponse(['error' => 'Message is required'], Response::HTTP_BAD_REQUEST);
+        }
 
         $conversation = new Conversation();
-        $conversation->setTitle($title);
+        $conversation->setTitle('New Conversation');
         $conversation->setUser($this->getUser());
-
         $this->entityManager->persist($conversation);
+
+        // Create initial message
+        $message = new Message();
+        $message->setContent($data['message']);
+        $message->setIsFromAi(false);
+        $message->setRole('user');
+        $message->setConversation($conversation);
+        $this->entityManager->persist($message);
+
         $this->entityManager->flush();
 
         return new JsonResponse([
@@ -57,6 +67,13 @@ class ConversationController extends AbstractController
             'title' => $conversation->getTitle(),
             'createdAt' => $conversation->getCreatedAt()->format('c'),
             'updatedAt' => $conversation->getUpdatedAt()->format('c'),
+            'messages' => [[
+                'id' => $message->getId(),
+                'content' => $message->getContent(),
+                'role' => $message->getRole(),
+                'isFromAi' => $message->isFromAi(),
+                'createdAt' => $message->getCreatedAt()->format('c'),
+            ]],
         ], Response::HTTP_CREATED);
     }
 
@@ -83,6 +100,7 @@ class ConversationController extends AbstractController
             return [
                 'id' => $message->getId(),
                 'content' => $message->getContent(),
+                'role' => $message->getRole(),
                 'isFromAi' => $message->isFromAi(),
                 'createdAt' => $message->getCreatedAt()->format('c'),
             ];
@@ -108,31 +126,17 @@ class ConversationController extends AbstractController
         $message = new Message();
         $message->setContent($data['content']);
         $message->setIsFromAi(false);
+        $message->setRole($data['role'] ?? 'user');
         $message->setConversation($conversation);
         $this->entityManager->persist($message);
-
-        // TODO: Get AI response
-        $aiMessage = new Message();
-        $aiMessage->setContent('AI response will be implemented here');
-        $aiMessage->setIsFromAi(true);
-        $aiMessage->setConversation($conversation);
-        $this->entityManager->persist($aiMessage);
-
         $this->entityManager->flush();
 
         return new JsonResponse([
-            'userMessage' => [
-                'id' => $message->getId(),
-                'content' => $message->getContent(),
-                'isFromAi' => $message->isFromAi(),
-                'createdAt' => $message->getCreatedAt()->format('c'),
-            ],
-            'aiMessage' => [
-                'id' => $aiMessage->getId(),
-                'content' => $aiMessage->getContent(),
-                'isFromAi' => $aiMessage->isFromAi(),
-                'createdAt' => $aiMessage->getCreatedAt()->format('c'),
-            ],
+            'id' => $message->getId(),
+            'content' => $message->getContent(),
+            'role' => $message->getRole(),
+            'isFromAi' => $message->isFromAi(),
+            'createdAt' => $message->getCreatedAt()->format('c'),
         ], Response::HTTP_CREATED);
     }
 }

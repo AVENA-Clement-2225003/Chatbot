@@ -25,13 +25,23 @@ class RegistrationController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         if (!isset($data['email']) || !isset($data['password'])) {
-            return new JsonResponse(['error' => 'Missing email or password'], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['message' => 'Invalid request: Missing email or password'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Validate email format
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return new JsonResponse(['message' => 'Invalid email format'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Validate password length
+        if (strlen($data['password']) < 8) {
+            return new JsonResponse(['message' => 'Invalid password: Must be at least 8 characters'], Response::HTTP_BAD_REQUEST);
         }
 
         // Check if user exists
         $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
         if ($existingUser) {
-            return new JsonResponse(['error' => 'User already exists'], Response::HTTP_CONFLICT);
+            return new JsonResponse(['message' => 'User already exists'], Response::HTTP_CONFLICT);
         }
 
         $user = new User();
@@ -46,6 +56,14 @@ class RegistrationController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        return new JsonResponse(['message' => 'User registered successfully'], Response::HTTP_CREATED);
+        // Create a token for the new user
+        $token = bin2hex(random_bytes(32));
+        $user->setApiToken($token);
+        $this->entityManager->flush();
+
+        return new JsonResponse([
+            'message' => 'User registered successfully',
+            'token' => $token
+        ], Response::HTTP_CREATED);
     }
 }

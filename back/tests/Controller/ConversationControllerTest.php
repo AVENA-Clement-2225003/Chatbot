@@ -19,6 +19,7 @@ class ConversationControllerTest extends BaseTestCase
         // Create a conversation for the test user
         $this->conversation = new Conversation();
         $this->conversation->setUser($this->testUser);
+        $this->conversation->setTitle('Test Conversation');
         $this->entityManager->persist($this->conversation);
 
         // Create a message in the conversation
@@ -105,6 +106,7 @@ class ConversationControllerTest extends BaseTestCase
         // Create a conversation for the other user
         $otherConversation = new Conversation();
         $otherConversation->setUser($otherUser);
+        $otherConversation->setTitle('Other User Conversation');
         $this->entityManager->persist($otherConversation);
         $this->entityManager->flush();
 

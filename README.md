@@ -1,5 +1,6 @@
 AVENA DELMAS KHADRAOUI NGUYEN
 # ChatBot
+Disclaimer : Le travail sur plusieurs branches qui seront merge 
 ## Résumé
 Il s'agit d'un projet de chat bot qui à pour but de répondre aux question d'un utilisateur
 ## Architecture
