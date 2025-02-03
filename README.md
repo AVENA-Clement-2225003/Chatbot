@@ -1,20 +1,21 @@
 AVENA DELMAS KHADRAOUI NGUYEN
 # ChatBot
 ## Résumé
+Il s'agit d'un projet de chat bot qui à pour but de répondre aux question d'un utilisateur
 ## Architecture
 ```
 |--/front               # Contient le visuel / l'interface
 |----/src
 |
-|--/back                 # Contient la logique métier
+|--/back                # Contient la logique métier
 |----/bin
 |----/config
 |----/database
-|----/migrations
+|----/migrations        # Pour créer la base de données
 |----/public
 |----/src
 |----/templates
-|----/tests
+|----/tests             # Tous les tests du back
 |----/var
 |----/vendor
 ```
@@ -57,12 +58,12 @@ curl -X POST http://localhost:8000/api/register \
   }'
 ```
 #### Conversations
-Pour lister toutes les conversations
+Pour lister toutes les conversations :
 ```shell
 curl -X GET http://localhost:8000/api/conversations \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
-Pour créer une conversation
+Pour créer une conversation :
 ```shell
 curl -X POST http://localhost:8000/api/conversations \
   -H "Content-Type: application/json" \
