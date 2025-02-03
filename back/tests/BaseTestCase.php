@@ -3,21 +3,20 @@
 namespace App\Tests;
 
 use Doctrine\ORM\Tools\SchemaTool;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\User;
 
 class BaseTestCase extends WebTestCase
 {
+    protected KernelBrowser $client;
     protected $entityManager;
-    protected $client;
     protected $testUser;
     protected $passwordHasher;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
-        parent::setUp();
-        
         $this->client = static::createClient();
         $container = static::getContainer();
 
@@ -27,14 +26,9 @@ class BaseTestCase extends WebTestCase
         // Create database schema
         $schemaTool = new SchemaTool($this->entityManager);
         $metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
-        
+
         try {
             $schemaTool->dropSchema($metadata);
-        } catch (\Exception $e) {
-            // Ignore if tables don't exist
-        }
-        
-        try {
             $schemaTool->createSchema($metadata);
         } catch (\Exception $e) {
             throw new \RuntimeException($e->getMessage());
@@ -55,7 +49,7 @@ class BaseTestCase extends WebTestCase
         $this->entityManager->flush();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         parent::tearDown();
         

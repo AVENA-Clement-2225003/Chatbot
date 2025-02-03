@@ -22,7 +22,8 @@ Il s'agit d'un projet de chat bot qui à pour but de répondre aux question d'un
 ## Sommaire
  - [Front](#front)
  - [Back](#back)
-    - [Tester](#front)
+    - [Tests](#tests)
+    - [Essayer](#essayer)
     - [Login / Logout / SignIn](#login--logout--signin)
     - [Conversations](#conversations)
     - [Messages](#messages)
@@ -30,7 +31,12 @@ Il s'agit d'un projet de chat bot qui à pour but de répondre aux question d'un
 Projet de type ReactJS en JavaScript
 ## Back
 Projet de type Symfony en PHP
-### Tester
+### Tests
+Pour lancer les test qui garantissent l'intégrité de l'application il vous suffit d'exécuter la commande ci-dessous lorsque vous vous trouvez dans `Chatbot/back`
+```shell
+php bin/phpunit
+```
+### Essayer
 Pour pouvoir tester le back sans notre front vous aurez besoin d'utiliser des requestes curl définies ci-dessous
 #### Login / Logout / SignIn
 Pour se connecter :

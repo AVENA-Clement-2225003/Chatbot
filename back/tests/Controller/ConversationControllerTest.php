@@ -9,22 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ConversationControllerTest extends BaseTestCase
 {
-    protected $client;
-    protected $entityManager;
-    protected $testUser;
+    private string $token;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->client = static::createClient();
-        $this->entityManager = static::getContainer()->get('doctrine')->getManager();
-        
-        // Get test user
-        $userRepository = static::getContainer()->get('doctrine')->getRepository(User::class);
-        $this->testUser = $userRepository->findOneByEmail('test@example.com');
-
-        // Login the test user
+        // Login to get the token
         $this->client->request(
             'POST',
             '/api/login',
@@ -37,12 +28,22 @@ class ConversationControllerTest extends BaseTestCase
             ])
         );
 
-        $this->assertResponseIsSuccessful();
+        $response = json_decode($this->client->getResponse()->getContent(), true);
+        $this->token = $response['token'];
     }
 
     public function testListConversations(): void
     {
-        $this->client->request('GET', '/api/conversations');
+        $this->client->request(
+            'GET',
+            '/api/conversations',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->token
+            ]
+        );
 
         $this->assertResponseIsSuccessful();
         $response = json_decode($this->client->getResponse()->getContent(), true);
@@ -56,7 +57,10 @@ class ConversationControllerTest extends BaseTestCase
             '/api/conversations',
             [],
             [],
-            ['CONTENT_TYPE' => 'application/json'],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->token
+            ],
             json_encode([
                 'title' => 'Test Conversation'
             ])
@@ -82,7 +86,16 @@ class ConversationControllerTest extends BaseTestCase
         $this->entityManager->persist($conversation);
         $this->entityManager->flush();
 
-        $this->client->request('GET', '/api/conversations/'.$conversation->getId().'/messages');
+        $this->client->request(
+            'GET',
+            '/api/conversations/'.$conversation->getId().'/messages',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->token
+            ]
+        );
 
         $this->assertResponseIsSuccessful();
         $response = json_decode($this->client->getResponse()->getContent(), true);
@@ -103,7 +116,10 @@ class ConversationControllerTest extends BaseTestCase
             '/api/conversations/'.$conversation->getId().'/messages',
             [],
             [],
-            ['CONTENT_TYPE' => 'application/json'],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->token
+            ],
             json_encode([
                 'content' => 'Test message'
             ])
@@ -141,7 +157,16 @@ class ConversationControllerTest extends BaseTestCase
         $this->entityManager->flush();
 
         // Try to access the other user's conversation
-        $this->client->request('GET', '/api/conversations/'.$conversation->getId().'/messages');
+        $this->client->request(
+            'GET',
+            '/api/conversations/'.$conversation->getId().'/messages',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->token
+            ]
+        );
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
 
         // Try to send a message to the other user's conversation
@@ -150,7 +175,10 @@ class ConversationControllerTest extends BaseTestCase
             '/api/conversations/'.$conversation->getId().'/messages',
             [],
             [],
-            ['CONTENT_TYPE' => 'application/json'],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->token
+            ],
             json_encode([
                 'content' => 'Test message'
             ])
