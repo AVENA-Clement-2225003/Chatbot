@@ -1,0 +1,19 @@
+{
+    "require": {
+        "symfony/security-bundle": "^7.2",
+        "symfony/validator": "^7.2",
+        "symfony/form": "^7.2",
+        "symfony/runtime": "^7.2",
+        "doctrine/annotations": "^2.0",
+        "symfony/password-hasher": "^7.2",
+        "symfonycasts/verify-email-bundle": "^1.17"
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.62"
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
+    }
+}

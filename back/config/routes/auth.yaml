@@ -1,0 +1,14 @@
+app_login:
+    path: /api/login
+    controller: App\Controller\SecurityController::login
+    methods: [POST]
+
+app_logout:
+    path: /api/logout
+    controller: App\Controller\SecurityController::logout
+    methods: [POST]
+
+app_register:
+    path: /api/register
+    controller: App\Controller\RegistrationController::register
+    methods: [POST]
