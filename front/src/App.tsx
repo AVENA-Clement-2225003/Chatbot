@@ -14,7 +14,7 @@ export default function Chatbot() {
     setInput("");
 
     try {
-      const response = await fetch("http://172.23.12.52:8000/chat", {
+      const response = await fetch("http://localhost:8000/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: input })
@@ -23,14 +23,11 @@ export default function Chatbot() {
       if (!response.ok) throw new Error("Erreur lors de la requête");
 
       const data = await response.json();
-      console.log("Réponse de l'API:", data); // <-- Ajout pour debug
-
       const botMessage = { role: "bot", content: data.response };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error("Erreur:", error);
     }
-
 
     setLoading(false);
   };
