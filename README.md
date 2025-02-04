@@ -136,6 +136,7 @@ npm run dev
 --- 
 ### 🔥 Tester le Chatbot
 #### 
+Ou si vous utilisez Vite :
 Une fois FastAPI, Symfony et React en cours d'exécution :
 Ouvrez votre navigateur et accédez à :
 http://localhost:5173 (si vous utilisez Vite)
@@ -143,7 +144,7 @@ http://localhost:3000 (si React utilise Create React App)
 Tapez un message dans l’interface
 Vérifiez que l’IA répond correctement
 --- 
-🛠 Tester l'API avec cURL
+### 🛠 Tester l'API avec cURL
 Si vous voulez tester l'API FastAPI, utilisez :
 ```powershell
 curl.exe -X POST "http://127.0.0.1:8000/conversation/1/messages" -H "Content-Type: application/json" -d "{\"content\":\"Bonjour\"}"
