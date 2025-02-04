@@ -19,13 +19,13 @@ export default function Chatbot() {
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
     setLoading(true);
 
-    // Ajoute le message de l'utilisateur
     const userMessage: Message = {
       id: messages.length + 1,
       text: inputMessage,
@@ -34,6 +34,8 @@ export default function Chatbot() {
     };
     setMessages((prev) => [...prev, userMessage]);
     setInputMessage("");
+
+    setIsTyping(true);
 
     try {
       const response = await fetch("http://localhost:8000/chat", {
@@ -47,16 +49,19 @@ export default function Chatbot() {
       const data = await response.json();
       console.log("Réponse de l'API:", data);
 
-      // Ajoute la réponse du bot
-      const botMessage: Message = {
-        id: messages.length + 2,
-        text: data.response || "Je n'ai pas compris...",
-        isBot: true,
-        timestamp: new Date()
-      };
-      setMessages((prev) => [...prev, botMessage]);
+      setTimeout(() => {
+        const botMessage: Message = {
+          id: messages.length + 2,
+          text: data.response || "Je n'ai pas compris...",
+          isBot: true,
+          timestamp: new Date()
+        };
+        setMessages((prev) => [...prev, botMessage]);
+        setIsTyping(false);
+      }, 1500);
     } catch (error) {
       console.error("Erreur:", error);
+      setIsTyping(false);
     }
 
     setLoading(false);
@@ -64,7 +69,6 @@ export default function Chatbot() {
 
   return (
       <div className="flex flex-col h-screen bg-gray-100">
-        {/* Header */}
         <header className="bg-white shadow-sm p-4">
           <div className="max-w-4xl mx-auto flex items-center gap-2">
             <Bot className="w-6 h-6 text-blue-600" />
@@ -72,9 +76,7 @@ export default function Chatbot() {
           </div>
         </header>
 
-        {/* Chat Container */}
         <div className="flex-1 max-w-4xl mx-auto w-full p-4 overflow-hidden flex flex-col">
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto mb-4 space-y-4">
             {messages.map((message) => (
                 <div
@@ -110,9 +112,26 @@ export default function Chatbot() {
                   </div>
                 </div>
             ))}
+
+            {/* Affichage de l'animation "bot en train d'écrire" */}
+            {isTyping && (
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-100">
+                    <Bot className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div className="flex flex-col max-w-[80%] items-start">
+                    <div className="rounded-lg p-3 bg-white shadow-sm">
+                      <div className="typing-indicator flex space-x-1">
+                        <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: "0s", transform: "translateY(-3px)" }}></span>
+                        <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: "0.15s", transform: "translateY(0px)" }}></span>
+                        <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: "0.3s", transform: "translateY(3px)" }}></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            )}
           </div>
 
-          {/* Input Form */}
           <form onSubmit={sendMessage} className="flex gap-2">
             <input
                 type="text"

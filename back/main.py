@@ -24,7 +24,7 @@ async def chat(request: ChatRequest):
     try:
         response = subprocess.run(
             ["ollama", "run", "mistral", request.prompt],
-            capture_output=True, text=True, check=True
+            capture_output=True, text=True, check=True, encoding="UTF-8"
         )
         return {"response": response.stdout.strip()}
     except Exception as e:
