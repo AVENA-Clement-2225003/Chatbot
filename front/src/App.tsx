@@ -8,7 +8,6 @@ export default function Chatbot() {
   const sendMessage = async () => {
     if (!input.trim()) return;
     setLoading(true);
-
     const userMessage = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
@@ -21,13 +20,14 @@ export default function Chatbot() {
       });
 
       if (!response.ok) throw new Error("Erreur lors de la requête");
-
       const data = await response.json();
+      console.log("Réponse de l'API:", data); // <-- Ajout pour debug
       const botMessage = { role: "bot", content: data.response };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error("Erreur:", error);
     }
+
 
     setLoading(false);
   };
