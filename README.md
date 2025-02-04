@@ -102,3 +102,18 @@ Testez une réponse de l'IA :
 ```powershell
 ollama run mistral "Bonjour"
 ```
+---
+🚀 Lancer l'API FastAPI
+Quand vous êtes dans /Back vous pouvez lancez FastAPI de cette façon  :
+```powershell
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+--- 
+### 💻 Installation du Frontend React
+
+#### 🔹 5. Installer Node.js et npm
+Vérifiez que Node.js et npm sont installés :
+```powershell
+node -v
+npm -v
+```
