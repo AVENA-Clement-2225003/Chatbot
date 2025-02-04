@@ -1,4 +1,4 @@
-# 🚀 Chatbot IA avec FastAPI, React et Symfony Lite (Windows)
+# 🤖 Chatbot IA avec FastAPI, React et Symfony Lite (Windows)
 
 Ce projet est une application de chatbot utilisant :
 - **FastAPI** pour le backend Python  
@@ -29,4 +29,10 @@ Installer FastAPI et les dépendances :
 Toujours sur **PowerShell** exécutez :
 ```powershell
 pip install "fastapi[standard]"
+```
+
+#### 🔹 3. **Installer Uvicorn**
+Dans votre **PowerShell** exécutez :
+```powershell
+pip install uvicorn
 ```
