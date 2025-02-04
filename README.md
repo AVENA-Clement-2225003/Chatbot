@@ -83,6 +83,22 @@ php -S 127.0.0.1:8000 -t public
 ```
 📌 Par défaut, l'API Symfony sera accessible sur :
 👉 http://127.0.0.1:8000 
-![ollama](https://github.com/user-attachments/assets/b79fc51e-844b-4768-b650-26b89cc9451f)
 
+### 🦙Installation et Configuration d'Ollama
+📌 Téléchargez Ollama pour Windows depuis :
+👉 https://ollama.com/
 
+Après installation, vérifiez qu'il fonctionne :
+```powershell
+ollama --version
+```
+
+Si le modèle Mistral n'est pas installé, téléchargez-le :
+```powershell
+ollama pull mistral
+```
+
+Testez une réponse de l'IA :
+```powershell
+ollama run mistral "Bonjour"
+```
