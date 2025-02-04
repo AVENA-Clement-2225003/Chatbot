@@ -13,6 +13,7 @@ class AppFixtures extends Fixture
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
+    
     ) {
     }
 
@@ -27,6 +28,9 @@ class AppFixtures extends Fixture
                 'password123'
             )
         );
+        
+        $token = bin2hex(random_bytes(32));
+        $user->setApiToken($token);
         $user->setIsVerified(true);
         $manager->persist($user);
 
@@ -41,12 +45,14 @@ class AppFixtures extends Fixture
             $userMessage = new Message();
             $userMessage->setContent("User question {$i}");
             $userMessage->setIsFromAi(false);
+            $userMessage->setRole('user');
             $userMessage->setConversation($conversation);
             $manager->persist($userMessage);
 
             $aiMessage = new Message();
             $aiMessage->setContent("AI response to question {$i}");
             $aiMessage->setIsFromAi(true);
+            $aiMessage->setRole('assistant');
             $aiMessage->setConversation($conversation);
             $manager->persist($aiMessage);
         }
