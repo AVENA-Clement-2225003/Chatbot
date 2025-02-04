@@ -20,3 +20,13 @@ cd Chatbot
 ### 🐍 Installation du Backend FastAPI
 
 #### 🔹 2. **Installer Python et FastAPI**
+Vérifier votre version de python : 
+Ouvrez **PowerShell** et exécutez :
+```powershell
+python --version
+```
+Installer FastAPI et les dépendances : 
+Toujours sur **PowerShell** exécutez :
+```powershell
+pip install "fastapi[standard]"
+```
