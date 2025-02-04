@@ -117,3 +117,37 @@ Vérifiez que Node.js et npm sont installés :
 node -v
 npm -v
 ```
+Ouvrer un autre terminal et aller dans /front et faire : 
+```powershell
+cd frontend
+npm install
+```
+Démarrez l'application React :
+```powershell
+npm start
+```
+Ou si vous utilisez Vite :
+```powershell
+npm run dev
+```
+📌 Le frontend sera accessible sur :
+👉 http://localhost:5173 (Vite)
+👉 http://localhost:3000 (Create React App)
+--- 
+### 🔥 Tester le Chatbot
+Une fois FastAPI, Symfony et React en cours d'exécution :
+Ouvrez votre navigateur et accédez à :
+  http://localhost:5173 (si vous utilisez Vite)
+  http://localhost:3000 (si React utilise Create React App)
+Tapez un message dans l’interface
+Vérifiez que l’IA répond correctement
+--- 
+🛠 Tester l'API avec cURL
+Si vous voulez tester l'API FastAPI, utilisez :
+```powershell
+curl.exe -X POST "http://127.0.0.1:8000/conversation/1/messages" -H "Content-Type: application/json" -d "{\"content\":\"Bonjour\"}"
+```
+📌 Si vous obtenez une réponse JSON correcte, l'API fonctionne ! 🎉
+---
+📂
+
