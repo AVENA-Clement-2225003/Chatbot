@@ -6,3 +6,13 @@ Ce projet est une application de chatbot utilisant :
 - **React** pour le frontend  
 - **Ollama (Mistral)** comme moteur d'IA  
 - **SQLite/PostgreSQL** pour stocker les messages
+
+---
+
+## 📂 **Installation et Configuration (Windows)**
+
+### 🔹 1. **Cloner le projet**
+Ouvrez **PowerShell** et exécutez :
+```powershell
+https://github.com/AVENA-Clement-2225003/Chatbot.git
+cd Chatbot
