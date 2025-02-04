@@ -6,7 +6,9 @@
         "symfony/runtime": "^7.2",
         "doctrine/annotations": "^2.0",
         "symfony/password-hasher": "^7.2",
-        "symfonycasts/verify-email-bundle": "^1.17"
+        "symfonycasts/verify-email-bundle": "^1.17",
+        "nelmio/cors-bundle": "^2.5",
+        "symfony/polyfill-uuid": "^1.31"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.62"

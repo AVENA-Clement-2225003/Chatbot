@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit52c2f39714f5a5b257977be26801ea13
+class ComposerStaticInitad242022180efd0735e2dd9b94067fda
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -17,12 +17,14 @@ class ComposerStaticInit52c2f39714f5a5b257977be26801ea13
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         '2203a247e6fda86070a5e4e07aed533a' => __DIR__ . '/..' . '/symfony/clock/Resources/now.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
+        '09f6b20656683369174dd6fa83b7e5fb' => __DIR__ . '/..' . '/symfony/polyfill-uuid/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
             'Symfony\\Runtime\\Symfony\\Component\\' => 34,
+            'Symfony\\Polyfill\\Uuid\\' => 22,
             'Symfony\\Polyfill\\Php83\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
@@ -74,6 +76,10 @@ class ComposerStaticInit52c2f39714f5a5b257977be26801ea13
             'Psr\\Cache\\' => 10,
             'PhpParser\\' => 10,
         ),
+        'N' => 
+        array (
+            'Nelmio\\CorsBundle\\' => 18,
+        ),
         'D' => 
         array (
             'Doctrine\\Inflector\\' => 19,
@@ -86,6 +92,10 @@ class ComposerStaticInit52c2f39714f5a5b257977be26801ea13
         'Symfony\\Runtime\\Symfony\\Component\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/runtime/Internal',
+        ),
+        'Symfony\\Polyfill\\Uuid\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-uuid',
         ),
         'Symfony\\Polyfill\\Php83\\' => 
         array (
@@ -275,6 +285,10 @@ class ComposerStaticInit52c2f39714f5a5b257977be26801ea13
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
+        'Nelmio\\CorsBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nelmio/cors-bundle',
+        ),
         'Doctrine\\Inflector\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Inflector',
@@ -313,9 +327,9 @@ class ComposerStaticInit52c2f39714f5a5b257977be26801ea13
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit52c2f39714f5a5b257977be26801ea13::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit52c2f39714f5a5b257977be26801ea13::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit52c2f39714f5a5b257977be26801ea13::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitad242022180efd0735e2dd9b94067fda::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitad242022180efd0735e2dd9b94067fda::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitad242022180efd0735e2dd9b94067fda::$classMap;
 
         }, null, ClassLoader::class);
     }
