@@ -135,8 +135,6 @@ npm run dev
 👉 http://localhost:3000 (Create React App)
 --- 
 ### 🔥 Tester le Chatbot
-#### 
-Ou si vous utilisez Vite :
 Une fois FastAPI, Symfony et React en cours d'exécution :
 Ouvrez votre navigateur et accédez à :
 http://localhost:5173 (si vous utilisez Vite)
