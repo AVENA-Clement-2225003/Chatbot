@@ -1,0 +1,6 @@
+{
+    "require": {
+        "fruitcake/laravel-cors": "^3.0",
+        "nelmio/cors-bundle": "^2.5"
+    }
+}
