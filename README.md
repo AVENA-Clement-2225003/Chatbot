@@ -66,4 +66,23 @@ composer -V
 symfony -v
 ```
 
+#### 🔹 4. Installer les dépendances Symfony Lite
+
+Dans le dossier Symfony, exécutez :
+```powershell
+cd back
+composer install
+```
+Lancez le serveur Symfony Lite :
+```powershell
+symfony server:start
+```
+Si Symfony ne démarre pas, utilisez :
+```powershell
+php -S 127.0.0.1:8000 -t public
+```
+📌 Par défaut, l'API Symfony sera accessible sur :
+👉 http://127.0.0.1:8000 
+![ollama](https://github.com/user-attachments/assets/b79fc51e-844b-4768-b650-26b89cc9451f)
+
 
