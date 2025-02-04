@@ -131,8 +131,8 @@ Ou si vous utilisez Vite :
 npm run dev
 ```
 📌 Le frontend sera accessible sur :
-👉 http://localhost:5173 (Vite)
-👉 http://localhost:3000 (Create React App)
+- 👉 http://localhost:5173 (Vite)
+- 👉 http://localhost:3000 (Create React App)
 --- 
 ### 🔥 Tester le Chatbot
 
