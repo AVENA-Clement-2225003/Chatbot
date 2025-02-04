@@ -135,11 +135,11 @@ npm run dev
 👉 http://localhost:3000 (Create React App)
 --- 
 ### 🔥 Tester le Chatbot
-
+#### 
 Une fois FastAPI, Symfony et React en cours d'exécution :
 Ouvrez votre navigateur et accédez à :
-  -http://localhost:5173 (si vous utilisez Vite)
-  -http://localhost:3000 (si React utilise Create React App)
+http://localhost:5173 (si vous utilisez Vite)
+http://localhost:3000 (si React utilise Create React App)
 Tapez un message dans l’interface
 Vérifiez que l’IA répond correctement
 --- 
