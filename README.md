@@ -31,7 +31,8 @@ Toujours sur **PowerShell** exécutez :
 pip install "fastapi[standard]"
 ```
 
-#### 🔹 3. **Installer Uvicorn**
+#### 🔹 3. **Installer Uvicorn** ![image](https://github.com/user-attachments/assets/230c0042-a10c-48b2-a8cc-7bd649ee73d0)
+
 Dans votre **PowerShell** exécutez :
 ```powershell
 pip install uvicorn
