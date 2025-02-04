@@ -138,8 +138,8 @@ npm run dev
 
 Une fois FastAPI, Symfony et React en cours d'exécution :
 Ouvrez votre navigateur et accédez à :
-  http://localhost:5173 (si vous utilisez Vite)
-  http://localhost:3000 (si React utilise Create React App)
+  -http://localhost:5173 (si vous utilisez Vite)
+  -http://localhost:3000 (si React utilise Create React App)
 Tapez un message dans l’interface
 Vérifiez que l’IA répond correctement
 --- 
@@ -150,5 +150,17 @@ curl.exe -X POST "http://127.0.0.1:8000/conversation/1/messages" -H "Content-Typ
 ```
 📌 Si vous obtenez une réponse JSON correcte, l'API fonctionne ! 🎉
 ---
-📂
+## 📂 Résumé des technologies 
+
+| **Technologie**       | **Usage**                                  |
+|----------------------|-----------------------------------------|
+| **FastAPI**          | API Backend (Python)                   |
+| **Symfony Lite**     | Backend complémentaire (PHP)           |
+| **Ollama (Mistral)** | Intelligence Artificielle              |
+| **React + Typescript** | Frontend                              |
+| **Uvicorn**          | Serveur pour exécuter FastAPI          |
+| **Symfony CLI**      | Serveur pour exécuter Symfony          |
+| **Scoop**           | Gestionnaire de paquets Windows        |
+| **Composer**        | Gestionnaire de dépendances PHP        |
+
 
