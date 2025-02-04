@@ -31,9 +31,39 @@ Toujours sur **PowerShell** exécutez :
 pip install "fastapi[standard]"
 ```
 
-#### 🔹 3. **Installer Uvicorn** ![image](https://github.com/user-attachments/assets/230c0042-a10c-48b2-a8cc-7bd649ee73d0)
+#### 🔹 3. **Installer Uvicorn** 
 
 Dans votre **PowerShell** exécutez :
 ```powershell
 pip install uvicorn
 ```
+### 🐘 Installation du Backend Symfony Lite
+
+#### 🔹 4. Installer PHP, Composer, Symfony et Scoop
+📌 1. Installer Scoop (Gestionnaire de paquets pour Windows)
+Scoop est un gestionnaire de paquets pratique pour Windows. Installez-le avec le **PowerShell** et tappez la commande suivante  :
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+```
+Ajoutez le bucket extras pour accéder aux outils PHP :
+```powershell
+scoop bucket add extras
+```
+📌 2. Installer PHP et Composer
+Avec Scoop, installez PHP et Composer en une seule commande :
+```powershell
+scoop install php composer
+```
+Ajoutez Symfony CLI :
+```powershell
+scoop install symfony-cli
+```
+Vérifiez les installations :
+```powershell
+php -v
+composer -V
+symfony -v
+```
+
+
