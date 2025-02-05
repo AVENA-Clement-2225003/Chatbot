@@ -22,8 +22,11 @@ class SecurityController extends AbstractController
             ], Response::HTTP_UNAUTHORIZED);
         }
 
+        // Generate JWT token
+        $token = $jwtManager->create($user);
+
         return new JsonResponse([
-            'token' => $jwtManager->create($user),
+            'token' => $token,
             'message' => 'Login successful',
         ]);
     }
