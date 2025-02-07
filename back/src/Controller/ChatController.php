@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\ChatSession;
 use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,90 +17,105 @@ class ChatController extends AbstractController
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Route('/chat/session', name: 'chat_session', methods: ['POST'])]
-    public function createSession(Request $request): JsonResponse
+    #[Route('/messages', name: 'get_messages', methods: ['GET'])]
+    public function getMessages(): JsonResponse
     {
-        $chatSession = new ChatSession();
-        
-        // If user is authenticated, associate the session with them
-        $user = $this->getUser();
-        if ($user) {
-            $chatSession->setUser($user);
-        }
-
-        $this->entityManager->persist($chatSession);
-        $this->entityManager->flush();
-
-        return $this->json([
-            'sessionId' => $chatSession->getSessionId()
-        ]);
-    }
-
-    #[Route('/chat/message', name: 'chat_message', methods: ['POST'])]
-    public function sendMessage(Request $request): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
-        $sessionId = $data['sessionId'] ?? null;
-        $content = $data['message'] ?? null;
-
-        if (!$sessionId || !$content) {
-            return $this->json(['error' => 'Missing required fields'], Response::HTTP_BAD_REQUEST);
-        }
-
-        $chatSession = $this->entityManager->getRepository(ChatSession::class)->findBySessionId($sessionId);
-        if (!$chatSession) {
-            return $this->json(['error' => 'Invalid session'], Response::HTTP_NOT_FOUND);
-        }
-
-        // Create user message
-        $message = new Message();
-        $message->setChatSession($chatSession)
-            ->setContent($content)
-            ->setIsBot(false);
-
-        $this->entityManager->persist($message);
-        
-        // Create bot response
-        $botMessage = new Message();
-        $botMessage->setChatSession($chatSession)
-            ->setContent($this->generateBotResponse($content))
-            ->setIsBot(true);
-
-        $this->entityManager->persist($botMessage);
-        $this->entityManager->flush();
-
-        return $this->json([
-            'userMessage' => [
-                'content' => $message->getContent(),
-                'timestamp' => $message->getCreatedAt()->format('c')
-            ],
-            'botMessage' => [
-                'content' => $botMessage->getContent(),
-                'timestamp' => $botMessage->getCreatedAt()->format('c')
-            ]
-        ]);
-    }
-
-    #[Route('/chat/history/{sessionId}', name: 'chat_history', methods: ['GET'])]
-    public function getHistory(string $sessionId): JsonResponse
-    {
-        $messages = $this->entityManager->getRepository(Message::class)->findByChatSession($sessionId);
+        $messages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'ASC']);
 
         $formattedMessages = array_map(function(Message $message) {
             return [
-                'content' => $message->getContent(),
-                'isBot' => $message->isBot(),
+                'id' => $message->getId(),
+                'text' => $message->getContent(),
+                'isBot' => $message->isFromAi(),
                 'timestamp' => $message->getCreatedAt()->format('c')
             ];
         }, $messages);
 
-        return $this->json($formattedMessages);
+        return $this->json($formattedMessages, Response::HTTP_OK, [
+            'Access-Control-Allow-Origin' => 'http://localhost:5173',
+            'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers' => 'Content-Type',
+        ]);
+    }
+
+    #[Route('/messages', name: 'send_message', methods: ['POST'])]
+    public function sendMessage(Request $request): JsonResponse
+    {
+        try {
+            $data = json_decode($request->getContent(), true);
+            $content = $data['text'] ?? null;
+
+            if (!$content) {
+                return $this->json(
+                    ['error' => 'Missing message text'], 
+                    Response::HTTP_BAD_REQUEST,
+                    $this->getCorsHeaders()
+                );
+            }
+
+            // Create user message
+            $message = new Message();
+            $message->setContent($content)
+                ->setIsFromAi(false)
+                ->setRole('user');
+
+            $this->entityManager->persist($message);
+            $this->entityManager->flush();
+
+            // Generate and save bot response
+            $botMessage = new Message();
+            $botMessage->setContent($this->generateBotResponse($content))
+                ->setIsFromAi(true)
+                ->setRole('assistant');
+
+            $this->entityManager->persist($botMessage);
+            $this->entityManager->flush();
+
+            return $this->json(
+                ['status' => 'Message sent successfully'],
+                Response::HTTP_OK,
+                $this->getCorsHeaders()
+            );
+
+        } catch (\Exception $e) {
+            return $this->json(
+                ['error' => 'Failed to process message'],
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                $this->getCorsHeaders()
+            );
+        }
+    }
+
+    #[Route('/messages', name: 'messages_preflight', methods: ['OPTIONS'])]
+    public function handlePreflightRequest(): Response
+    {
+        return new Response(
+            null,
+            Response::HTTP_NO_CONTENT,
+            $this->getCorsHeaders()
+        );
     }
 
     private function generateBotResponse(string $message): string
     {
-        // This is where you would integrate your chatbot logic
-        // For now, we'll return a simple response
-        return "Thank you for your message: \"$message\". This is a placeholder response.";
+        // Simple response generation - you can replace this with your actual bot logic
+        $responses = [
+            "Je comprends votre message.",
+            "Pouvez-vous m'en dire plus ?",
+            "Je vais vous aider avec ça.",
+            "C'est une excellente question.",
+            "Laissez-moi réfléchir à cela."
+        ];
+        
+        return $responses[array_rand($responses)];
+    }
+
+    private function getCorsHeaders(): array
+    {
+        return [
+            'Access-Control-Allow-Origin' => 'http://localhost:5173',
+            'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers' => 'Content-Type',
+        ];
     }
 }

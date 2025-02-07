@@ -14,10 +14,6 @@ class Message
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Conversation::class, inversedBy: 'messages')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Conversation $conversation = null;
-
     #[ORM\Column(type: 'text')]
     private string $content;
 
@@ -39,17 +35,6 @@ class Message
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getConversation(): ?Conversation
-    {
-        return $this->conversation;
-    }
-
-    public function setConversation(?Conversation $conversation): static
-    {
-        $this->conversation = $conversation;
-        return $this;
     }
 
     public function getContent(): string

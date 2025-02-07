@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Send, Bot, User } from 'lucide-react';
 
 interface Message {
@@ -7,6 +7,8 @@ interface Message {
   isBot: boolean;
   timestamp: Date;
 }
+
+const API_URL = 'http://localhost:8000';
 
 function App() {
   const [messages, setMessages] = useState<Message[]>([
@@ -18,12 +20,48 @@ function App() {
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const fetchMessages = async () => {
+    try {
+      const response = await fetch(`${API_URL}/messages`);
+      if (!response.ok) throw new Error('Failed to fetch messages');
+      const data = await response.json();
+      setMessages(data.map((msg: any) => ({
+        ...msg,
+        timestamp: new Date(msg.timestamp)
+      })));
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
+  const sendMessage = async (text: string) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${API_URL}/messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!response.ok) throw new Error('Failed to send message');
+      
+      // Wait for the message to be processed and then fetch updated messages
+      await fetchMessages();
+    } catch (error) {
+      console.error('Error sending message:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputMessage.trim()) return;
+    if (!inputMessage.trim() || isLoading) return;
 
-    // Add user message
     const newMessage: Message = {
       id: messages.length + 1,
       text: inputMessage,
@@ -32,19 +70,15 @@ function App() {
     };
 
     setMessages(prev => [...prev, newMessage]);
+    const messageText = inputMessage;
     setInputMessage('');
 
-    // Simulate bot response (this will be replaced with actual API call)
-    setTimeout(() => {
-      const botResponse: Message = {
-        id: messages.length + 2,
-        text: "Je traite votre message...",
-        isBot: true,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botResponse]);
-    }, 1000);
+    await sendMessage(messageText);
   };
+
+  useEffect(() => {
+    fetchMessages();
+  }, []);
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
