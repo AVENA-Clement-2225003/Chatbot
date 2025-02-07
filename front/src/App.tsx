@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Send, Bot, User } from 'lucide-react';
 
 interface Message {
-  id: number;
+  id: number | string;
   text: string;
   isBot: boolean;
   timestamp: Date;
@@ -24,44 +24,112 @@ function App() {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(`${API_URL}/messages`);
-      if (!response.ok) throw new Error('Failed to fetch messages');
+      console.log('[Chat] Fetching messages from API');
+      const response = await fetch(`${API_URL}/api/messages`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.status === 401) {
+        console.log('[Chat] User is not authenticated');
+        setMessages([{
+          id: 'auth-error',
+          text: 'Please log in to use the chat.',
+          isBot: true,
+          timestamp: new Date()
+        }]);
+        return;
+      }
+
+      if (!response.ok) {
+        console.error('[Chat] Server returned error:', response.status);
+        throw new Error('Failed to fetch messages');
+      }
+
       const data = await response.json();
+      console.log('[Chat] Received messages:', data);
       setMessages(data.map((msg: any) => ({
         ...msg,
         timestamp: new Date(msg.timestamp)
       })));
     } catch (error) {
-      console.error('Error fetching messages:', error);
+      console.error('[Chat] Error fetching messages:', error);
     }
   };
 
   const sendMessage = async (text: string) => {
     try {
       setIsLoading(true);
-      const response = await fetch(`${API_URL}/messages`, {
+      console.log('[Chat] Sending message:', text);
+      
+      const response = await fetch(`${API_URL}/api/messages`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ text }),
       });
 
-      if (!response.ok) throw new Error('Failed to send message');
+      if (response.status === 401) {
+        console.log('[Chat] User is not authenticated');
+        setMessages(prev => [...prev, {
+          id: 'auth-error',
+          text: 'Please log in to use the chat.',
+          isBot: true,
+          timestamp: new Date()
+        }]);
+        return;
+      }
+
+      if (!response.ok) {
+        console.error('[Chat] Server returned error:', response.status);
+        throw new Error('Failed to send message');
+      }
       
-      // Wait for the message to be processed and then fetch updated messages
-      await fetchMessages();
+      const data = await response.json();
+      console.log('[Chat] Received response:', data);
+      
+      // Add bot response to messages
+      if (data.botResponse) {
+        console.log('[Chat] Adding bot response to chat');
+        const botMessage: Message = {
+          id: data.botResponse.id,
+          text: data.botResponse.text,
+          isBot: true,
+          timestamp: new Date(data.botResponse.timestamp)
+        };
+        setMessages(prev => [...prev, botMessage]);
+      } else {
+        console.warn('[Chat] No bot response in data');
+      }
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error('[Chat] Error sending message:', error);
+      setMessages(prev => [...prev, {
+        id: 'error',
+        text: 'An error occurred while sending your message. Please try again.',
+        isBot: true,
+        timestamp: new Date()
+      }]);
     } finally {
       setIsLoading(false);
+      console.log('[Chat] Message handling completed');
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputMessage.trim() || isLoading) return;
+    if (!inputMessage.trim() || isLoading) {
+      console.log('[Chat] Skipping empty message or already loading');
+      return;
+    }
 
+    console.log('[Chat] Handling new message submission');
     const newMessage: Message = {
       id: messages.length + 1,
       text: inputMessage,
@@ -69,6 +137,7 @@ function App() {
       timestamp: new Date()
     };
 
+    console.log('[Chat] Adding user message to chat');
     setMessages(prev => [...prev, newMessage]);
     const messageText = inputMessage;
     setInputMessage('');
@@ -77,6 +146,7 @@ function App() {
   };
 
   useEffect(() => {
+    console.log('[Chat] Initial messages fetch');
     fetchMessages();
   }, []);
 
