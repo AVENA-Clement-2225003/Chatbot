@@ -18,39 +18,19 @@ class ChatController extends AbstractController
         private EntityManagerInterface $entityManager
     ) {}
 
-    #[Route('/chat/session', name: 'chat_session', methods: ['POST'])]
-    public function createSession(Request $request): JsonResponse
-    {
-        $chatSession = new ChatSession();
-        
-        // If user is authenticated, associate the session with them
-        $user = $this->getUser();
-        if ($user) {
-            $chatSession->setUser($user);
-        }
-
-        $this->entityManager->persist($chatSession);
-        $this->entityManager->flush();
-
-        return $this->json([
-            'sessionId' => $chatSession->getSessionId()
-        ]);
-    }
-
-    #[Route('/chat/message', name: 'chat_message', methods: ['POST'])]
-    public function sendMessage(Request $request): JsonResponse
+    #[Route('/conversation/{id}/messages', name: 'conversation_message', methods: ['POST'])]
+    public function sendMessage(string $id, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $sessionId = $data['sessionId'] ?? null;
         $content = $data['message'] ?? null;
 
-        if (!$sessionId || !$content) {
-            return $this->json(['error' => 'Missing required fields'], Response::HTTP_BAD_REQUEST);
+        if (!$content) {
+            return $this->json(['error' => 'Missing message content'], Response::HTTP_BAD_REQUEST);
         }
 
-        $chatSession = $this->entityManager->getRepository(ChatSession::class)->findBySessionId($sessionId);
+        $chatSession = $this->entityManager->getRepository(ChatSession::class)->find($id);
         if (!$chatSession) {
-            return $this->json(['error' => 'Invalid session'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Conversation not found'], Response::HTTP_NOT_FOUND);
         }
 
         // Create user message
@@ -61,25 +41,26 @@ class ChatController extends AbstractController
 
         $this->entityManager->persist($message);
         
-        // Create bot response
+        // Send message to AI API
+        $response = $this->generateBotResponse($content);
+        
+        if (isset($response['error'])) {
+            return $this->json(['error' => 'AI API error: ' . $response['error']], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        // Create bot response message
         $botMessage = new Message();
         $botMessage->setChatSession($chatSession)
-            ->setContent($this->generateBotResponse($content))
+            ->setContent($response['response'])
             ->setIsBot(true);
 
         $this->entityManager->persist($botMessage);
         $this->entityManager->flush();
 
         return $this->json([
-            'userMessage' => [
-                'content' => $message->getContent(),
-                'timestamp' => $message->getCreatedAt()->format('c')
-            ],
-            'botMessage' => [
-                'content' => $botMessage->getContent(),
-                'timestamp' => $botMessage->getCreatedAt()->format('c')
-            ]
-        ]);
+            'status' => 'success',
+            'response' => $response['response']
+        ], Response::HTTP_OK);
     }
 
     #[Route('/chat/history/{sessionId}', name: 'chat_history', methods: ['GET'])]
@@ -98,10 +79,20 @@ class ChatController extends AbstractController
         return $this->json($formattedMessages);
     }
 
-    private function generateBotResponse(string $message): string
+    private function generateBotResponse(string $message): array
     {
-        // This is where you would integrate your chatbot logic
-        // For now, we'll return a simple response
-        return "Thank you for your message: \"$message\". This is a placeholder response.";
+        $client = new \GuzzleHttp\Client();
+        
+        try {
+            $response = $client->post('http://localhost:8000/chat', [
+                'json' => [
+                    'prompt' => $message
+                ]
+            ]);
+
+            return json_decode($response->getBody()->getContents(), true);
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
     }
 }
