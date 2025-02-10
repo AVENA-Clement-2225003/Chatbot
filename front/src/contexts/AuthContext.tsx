@@ -38,16 +38,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to login');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to login');
       }
 
       const data = await response.json();
+      if (!data.token) {
+        throw new Error('No token received from server');
+      }
       setToken(data.token);
     } catch (error) {
       console.error('Login error:', error);
@@ -61,17 +65,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to register');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to register');
       }
 
-      // After successful registration, log the user in
-      await login(email, password);
+      const data = await response.json();
+      if (!data.token) {
+        // If registration is successful but doesn't return a token, log in
+        await login(email, password);
+      } else {
+        setToken(data.token);
+      }
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
