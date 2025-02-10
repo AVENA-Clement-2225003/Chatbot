@@ -158,8 +158,12 @@ class ChatController extends AbstractController
             error_log("[ChatController] Calling AI API with message: " . $message);
 
             // Call the FastAPI endpoint
-            $response = $this->httpClient->request('POST', 'http://127.0.0.1:8001/chat', [
-                'json' => ['prompt' => $message],
+            $response = $this->httpClient->request('POST', 'http://127.0.0.1:8001/api/messages', [
+                'json' => [
+                    'text' => $message,
+                    'isBot' => false,
+                    'timestamp' => time()
+                ],
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json'
@@ -175,13 +179,13 @@ class ChatController extends AbstractController
             $data = json_decode($content, true);
             error_log("[ChatController] Decoded response: " . json_encode($data));
 
-            if (!$data || !isset($data['response'])) {
+            if (!$data || !isset($data['botResponse']) || !isset($data['botResponse']['text'])) {
                 error_log("[ChatController] Invalid response format: " . $content);
                 throw new \Exception("Invalid response from AI API");
             }
 
-            error_log("[ChatController] AI response received: " . $data['response']);
-            return $data['response'];
+            error_log("[ChatController] AI response received: " . $data['botResponse']['text']);
+            return $data['botResponse']['text'];
 
         } catch (\Exception $e) {
             error_log("[ChatController] Detailed error: " . $e->getMessage() . "\n" . $e->getTraceAsString());
