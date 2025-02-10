@@ -141,6 +141,20 @@ Utilisez `symfony check:requirements` pour constater si il est installé
 
 Enfin, il faudra avoir un fichier `.env` dans le dossier du Back, prenez exemple du `.env.example` et remplissez avec vos informations.
 
+#### Étape 2 : Commandes
+```shell
+php bin/console doctrine:database:create
+php bin/console doctrine:schema:update --force
+php bin/console doctrine:migrations:version --add --all
+php bin/console doctrine:database:drop --force
+
+php bin/console doctrine:migrations:migrate 
+```
+
+To generate a JWT Token
+```shell
+php bin/console lexik:jwt:generate-keypair
+```
 ### III. API IA
 Pour que notre projet fonctionne, nous avons besoin d'une IA qui communique par API, c'est pourquoi il vous faudra en installer une sur votre machine **en plus** de d'autres dépendances.
 
@@ -185,14 +199,5 @@ symfony serve
 ```
 #### API IA (Python 3.3)
 ```shell
-uvicorn main:app --host 0.0.0.0 --port 8000
+uvicorn main:app --host 0.0.0.0 --port 8001
 ```
-
-php bin/console doctrine:schema:update --force
-php bin/console doctrine:migrations:version --add --all
-php bin/console doctrine:migrations:drop --force
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate 
-
-Token
-php bin/console lexik:jwt:generate-keypair
