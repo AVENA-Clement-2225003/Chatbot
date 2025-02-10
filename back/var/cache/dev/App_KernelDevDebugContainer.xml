@@ -437,6 +437,7 @@
       <tag name="container.service_subscriber"/>
       <argument type="service" id="security.user_password_hasher"/>
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="lexik_jwt_authentication.jwt_manager"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\RegistrationController"/>
       </call>
