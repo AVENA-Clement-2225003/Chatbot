@@ -14,8 +14,6 @@
     <parameter key="kernel.logs_dir">/Users/mikado/WebstormProjects/Chatbot/back/var/log</parameter>
     <parameter key="kernel.bundles" type="collection">
       <parameter key="FrameworkBundle">Symfony\Bundle\FrameworkBundle\FrameworkBundle</parameter>
-      <parameter key="TwigBundle">Symfony\Bundle\TwigBundle\TwigBundle</parameter>
-      <parameter key="TwigExtraBundle">Twig\Extra\TwigExtraBundle\TwigExtraBundle</parameter>
       <parameter key="DoctrineBundle">Doctrine\Bundle\DoctrineBundle\DoctrineBundle</parameter>
       <parameter key="DoctrineMigrationsBundle">Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle</parameter>
       <parameter key="SecurityBundle">Symfony\Bundle\SecurityBundle\SecurityBundle</parameter>
@@ -30,14 +28,6 @@
       <parameter key="FrameworkBundle" type="collection">
         <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/framework-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\FrameworkBundle</parameter>
-      </parameter>
-      <parameter key="TwigBundle" type="collection">
-        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/twig-bundle</parameter>
-        <parameter key="namespace">Symfony\Bundle\TwigBundle</parameter>
-      </parameter>
-      <parameter key="TwigExtraBundle" type="collection">
-        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/twig/extra-bundle</parameter>
-        <parameter key="namespace">Twig\Extra\TwigExtraBundle</parameter>
       </parameter>
       <parameter key="DoctrineBundle" type="collection">
         <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/doctrine/doctrine-bundle</parameter>
@@ -143,10 +133,6 @@
     <parameter key="validator.mapping.cache.file">/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/validation.php</parameter>
     <parameter key="validator.translation_domain">validators</parameter>
     <parameter key="data_collector.templates" type="collection"/>
-    <parameter key="twig.form.resources" type="collection">
-      <parameter>form_div_layout.html.twig</parameter>
-    </parameter>
-    <parameter key="twig.default_path">/Users/mikado/WebstormProjects/Chatbot/back/templates</parameter>
     <parameter key="doctrine.dbal.configuration.class">Doctrine\DBAL\Configuration</parameter>
     <parameter key="doctrine.data_collector.class">Doctrine\Bundle\DoctrineBundle\DataCollector\DoctrineDataCollector</parameter>
     <parameter key="doctrine.dbal.connection.event_manager.class">Symfony\Bridge\Doctrine\ContainerAwareEventManager</parameter>
@@ -236,38 +222,45 @@
     <parameter key="security.logout_uris" type="collection"/>
     <parameter key="nelmio_cors.map" type="collection">
       <parameter key="^/api/" type="collection">
-        <parameter key="allow_origin">true</parameter>
-        <parameter key="allow_methods" type="collection">
-          <parameter>GET</parameter>
-          <parameter>POST</parameter>
-          <parameter>OPTIONS</parameter>
-          <parameter>PUT</parameter>
-          <parameter>DELETE</parameter>
+        <parameter key="allow_origin" type="collection">
+          <parameter>http://localhost:3000</parameter>
+          <parameter>http://localhost:5173</parameter>
         </parameter>
         <parameter key="allow_headers" type="collection">
           <parameter>content-type</parameter>
           <parameter>authorization</parameter>
+          <parameter>accept</parameter>
+        </parameter>
+        <parameter key="allow_methods" type="collection">
+          <parameter>POST</parameter>
+          <parameter>PUT</parameter>
+          <parameter>GET</parameter>
+          <parameter>DELETE</parameter>
+          <parameter>OPTIONS</parameter>
         </parameter>
         <parameter key="max_age">3600</parameter>
+        <parameter key="allow_credentials">true</parameter>
       </parameter>
     </parameter>
     <parameter key="nelmio_cors.defaults" type="collection">
       <parameter key="allow_origin" type="collection">
-        <parameter>https:127.0.0.1</parameter>
+        <parameter>http://localhost:5173</parameter>
       </parameter>
-      <parameter key="allow_credentials">false</parameter>
+      <parameter key="allow_credentials">true</parameter>
       <parameter key="allow_headers" type="collection">
         <parameter>content-type</parameter>
         <parameter>authorization</parameter>
       </parameter>
       <parameter key="allow_private_network">false</parameter>
-      <parameter key="expose_headers" type="collection"/>
+      <parameter key="expose_headers" type="collection">
+        <parameter>Link</parameter>
+      </parameter>
       <parameter key="allow_methods" type="collection">
         <parameter>GET</parameter>
-        <parameter>OPTIONS</parameter>
         <parameter>POST</parameter>
         <parameter>PUT</parameter>
         <parameter>DELETE</parameter>
+        <parameter>OPTIONS</parameter>
       </parameter>
       <parameter key="max_age">3600</parameter>
       <parameter key="hosts" type="collection"/>
@@ -411,8 +404,8 @@
     <parameter key="api_platform.swagger.versions" type="collection">
       <parameter>3</parameter>
     </parameter>
-    <parameter key="api_platform.enable_swagger_ui">true</parameter>
-    <parameter key="api_platform.enable_re_doc">true</parameter>
+    <parameter key="api_platform.enable_swagger_ui">false</parameter>
+    <parameter key="api_platform.enable_re_doc">false</parameter>
     <parameter key="api_platform.swagger.api_keys" type="collection"/>
     <parameter key="api_platform.swagger_ui.extra_configuration" type="collection"/>
     <parameter key="api_platform.graphql.enabled">false</parameter>
@@ -446,6 +439,7 @@
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="http_client.uri_template"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\ChatController"/>
       </call>
@@ -463,6 +457,7 @@
       <tag name="container.service_subscriber"/>
       <argument type="service" id="security.user_password_hasher"/>
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="lexik_jwt_authentication.jwt_manager"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\RegistrationController"/>
       </call>
@@ -470,6 +465,9 @@
     <service id="App\Controller\SecurityController" class="App\Controller\SecurityController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="security.user_password_hasher"/>
+      <argument type="service" id="lexik_jwt_authentication.jwt_manager"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\SecurityController"/>
       </call>
@@ -531,7 +529,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.vEsvNyi"/>
+      <argument type="service" id=".service_locator.U2ruBO0"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -601,7 +599,9 @@
       <argument type="service" id="debug.argument_resolver"/>
       <argument>true</argument>
     </service>
-    <service id="request_stack" class="Symfony\Component\HttpFoundation\RequestStack" public="true"/>
+    <service id="request_stack" class="Symfony\Component\HttpFoundation\RequestStack" public="true">
+      <tag name="kernel.reset" method="resetRequestFormats" on_invalid="ignore"/>
+    </service>
     <service id="http_cache" class="Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache">
       <tag name="container.hot_path"/>
       <argument type="service" id="kernel"/>
@@ -646,19 +646,21 @@
     </service>
     <service id="services_resetter" class="Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter" public="true">
       <argument type="iterator">
+        <argument key="request_stack" type="service" id="request_stack" on-invalid="ignore_uninitialized"/>
+        <argument key="container.env_var_processor" type="service" id="container.env_var_processor" on-invalid="ignore_uninitialized"/>
         <argument key="cache.app" type="service" id="cache.app" on-invalid="ignore_uninitialized"/>
         <argument key="cache.system" type="service" id="cache.system" on-invalid="ignore_uninitialized"/>
         <argument key="cache.validator" type="service" id="cache.validator" on-invalid="ignore_uninitialized"/>
         <argument key="cache.serializer" type="service" id="cache.serializer" on-invalid="ignore_uninitialized"/>
         <argument key="cache.property_info" type="service" id="cache.property_info" on-invalid="ignore_uninitialized"/>
+        <argument key="http_client.transport" type="service" id="http_client.transport" on-invalid="ignore_uninitialized"/>
+        <argument key="http_client" type="service" id="http_client.uri_template" on-invalid="ignore_uninitialized"/>
         <argument key="mailer.message_logger_listener" type="service" id="mailer.message_logger_listener" on-invalid="ignore_uninitialized"/>
         <argument key="debug.stopwatch" type="service" id="debug.stopwatch" on-invalid="ignore_uninitialized"/>
         <argument key="debug.event_dispatcher" type="service" id="debug.event_dispatcher" on-invalid="ignore_uninitialized"/>
         <argument key="session_listener" type="service" id="session_listener" on-invalid="ignore_uninitialized"/>
         <argument key="form.choice_list_factory.cached" type="service" id="form.choice_list_factory.cached" on-invalid="ignore_uninitialized"/>
         <argument key="cache.validator_expression_language" type="service" id="cache.validator_expression_language" on-invalid="ignore_uninitialized"/>
-        <argument key="twig" type="service" id="twig" on-invalid="ignore_uninitialized"/>
-        <argument key="twig.form.engine" type="service" id="twig.form.engine" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine" type="service" id="doctrine" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.debug_data_holder" type="service" id="doctrine.debug_data_holder" on-invalid="ignore_uninitialized"/>
         <argument key="form.type.entity" type="service" id="form.type.entity" on-invalid="ignore_uninitialized"/>
@@ -679,6 +681,12 @@
         <argument key="debug.security.event_dispatcher.main" type="service" id="debug.security.event_dispatcher.main" on-invalid="ignore_uninitialized"/>
       </argument>
       <argument type="collection">
+        <argument key="request_stack" type="collection">
+          <argument>?resetRequestFormats</argument>
+        </argument>
+        <argument key="container.env_var_processor" type="collection">
+          <argument>reset</argument>
+        </argument>
         <argument key="cache.app" type="collection">
           <argument>reset</argument>
         </argument>
@@ -693,6 +701,12 @@
         </argument>
         <argument key="cache.property_info" type="collection">
           <argument>reset</argument>
+        </argument>
+        <argument key="http_client.transport" type="collection">
+          <argument>?reset</argument>
+        </argument>
+        <argument key="http_client" type="collection">
+          <argument>?reset</argument>
         </argument>
         <argument key="mailer.message_logger_listener" type="collection">
           <argument>reset</argument>
@@ -710,12 +724,6 @@
           <argument>reset</argument>
         </argument>
         <argument key="cache.validator_expression_language" type="collection">
-          <argument>reset</argument>
-        </argument>
-        <argument key="twig" type="collection">
-          <argument>resetGlobals</argument>
-        </argument>
-        <argument key="twig.form.engine" type="collection">
           <argument>reset</argument>
         </argument>
         <argument key="doctrine" type="collection">
@@ -790,6 +798,7 @@
     </service>
     <service id="container.env_var_processor" class="Symfony\Component\DependencyInjection\EnvVarProcessor">
       <tag name="container.env_var_processor"/>
+      <tag name="kernel.reset" method="reset"/>
       <argument type="service" id="service_container"/>
       <argument type="tagged_iterator" tag="container.env_var_loader"/>
     </service>
@@ -1473,7 +1482,6 @@
     </service>
     <service id="cache.system_clearer" class="Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer" public="true">
       <tag name="cache.pool.clearer"/>
-      <tag name="kernel.cache_clearer"/>
       <argument type="collection">
         <argument key="cache.system" type="service" id="cache.system" on-invalid="ignore_uninitialized"/>
         <argument key="cache.validator" type="service" id="cache.validator" on-invalid="ignore_uninitialized"/>
@@ -1550,13 +1558,58 @@
     <service id="assets.empty_version_strategy" class="Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy"/>
     <service id="assets.json_manifest_version_strategy" class="Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy" abstract="true">
       <argument type="abstract">manifest path</argument>
-      <argument type="service" id="http_client" on-invalid="null"/>
+      <argument type="service" id="http_client.uri_template" on-invalid="null"/>
       <argument>false</argument>
     </service>
     <service id="assets._default_package" class="Symfony\Component\Asset\PathPackage">
       <argument></argument>
       <argument type="service" id="assets.empty_version_strategy"/>
       <argument type="service" id="assets.context"/>
+    </service>
+    <service id="http_client.transport" class="Symfony\Contracts\HttpClient\HttpClientInterface">
+      <tag name="monolog.logger" channel="http_client"/>
+      <tag name="kernel.reset" method="reset" on_invalid="ignore"/>
+      <argument type="collection"/>
+      <argument>6</argument>
+      <call method="setLogger">
+        <argument type="service" id="logger" on-invalid="ignore"/>
+      </call>
+      <factory class="Symfony\Component\HttpClient\HttpClient" method="create"/>
+    </service>
+    <service id="http_client.abstract_retry_strategy" class="Symfony\Component\HttpClient\Retry\GenericRetryStrategy" abstract="true">
+      <argument type="abstract">http codes</argument>
+      <argument type="abstract">delay ms</argument>
+      <argument type="abstract">multiplier</argument>
+      <argument type="abstract">max delay ms</argument>
+      <argument type="abstract">jitter</argument>
+    </service>
+    <service id="http_client.uri_template" class="Symfony\Component\HttpClient\UriTemplateHttpClient">
+      <tag name="http_client.client"/>
+      <tag name="kernel.reset" method="reset" on_invalid="ignore"/>
+      <tag name="container.decorator" id="http_client" inner="http_client.uri_template.inner"/>
+      <argument type="service" id="http_client.uri_template.inner"/>
+      <argument>null</argument>
+      <argument type="collection"/>
+    </service>
+    <service id="http_client.uri_template_expander.guzzle" class="Closure">
+      <argument type="collection">
+        <argument>GuzzleHttp\UriTemplate\UriTemplate</argument>
+        <argument>expand</argument>
+      </argument>
+      <factory class="Closure" method="fromCallable"/>
+    </service>
+    <service id="http_client.uri_template_expander.rize" class="Closure">
+      <argument type="collection">
+        <argument type="service">
+          <service class="Rize\UriTemplate"/>
+        </argument>
+        <argument>expand</argument>
+      </argument>
+      <factory class="Closure" method="fromCallable"/>
+    </service>
+    <service id="http_client.messenger.ping_webhook_handler" class="Symfony\Component\HttpClient\Messenger\PingWebhookMessageHandler">
+      <tag name="messenger.message_handler"/>
+      <argument type="service" id="http_client.uri_template"/>
     </service>
     <service id="mailer.mailer" class="Symfony\Component\Mailer\Mailer">
       <argument type="service" id="mailer.transports"/>
@@ -1607,31 +1660,31 @@
     <service id="mailer.transport_factory.abstract" class="Symfony\Component\Mailer\Transport\AbstractTransportFactory" abstract="true">
       <tag name="monolog.logger" channel="mailer"/>
       <argument type="service" id="debug.event_dispatcher"/>
-      <argument type="service" id="http_client" on-invalid="ignore"/>
+      <argument type="service" id="http_client.uri_template" on-invalid="ignore"/>
       <argument type="service" id="logger" on-invalid="ignore"/>
     </service>
     <service id="mailer.transport_factory.native" class="Symfony\Component\Mailer\Transport\NativeTransportFactory">
       <tag name="mailer.transport_factory"/>
       <argument type="service" id="debug.event_dispatcher"/>
-      <argument>null</argument>
+      <argument type="service" id="http_client.uri_template" on-invalid="ignore"/>
       <argument type="service" id="logger" on-invalid="ignore"/>
     </service>
     <service id="mailer.transport_factory.null" class="Symfony\Component\Mailer\Transport\NullTransportFactory">
       <tag name="mailer.transport_factory"/>
       <argument type="service" id="debug.event_dispatcher"/>
-      <argument>null</argument>
+      <argument type="service" id="http_client.uri_template" on-invalid="ignore"/>
       <argument type="service" id="logger" on-invalid="ignore"/>
     </service>
     <service id="mailer.transport_factory.sendmail" class="Symfony\Component\Mailer\Transport\SendmailTransportFactory">
       <tag name="mailer.transport_factory"/>
       <argument type="service" id="debug.event_dispatcher"/>
-      <argument>null</argument>
+      <argument type="service" id="http_client.uri_template" on-invalid="ignore"/>
       <argument type="service" id="logger" on-invalid="ignore"/>
     </service>
     <service id="mailer.transport_factory.smtp" class="Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory">
       <tag name="mailer.transport_factory"/>
       <argument type="service" id="debug.event_dispatcher"/>
-      <argument>null</argument>
+      <argument type="service" id="http_client.uri_template" on-invalid="ignore"/>
       <argument type="service" id="logger" on-invalid="ignore"/>
     </service>
     <service id="debug.error_handler_configurator" class="Symfony\Component\HttpKernel\Debug\ErrorHandlerConfigurator" public="true">
@@ -1963,22 +2016,6 @@
         <argument>-1000</argument>
       </call>
       <call method="addListener">
-        <argument>kernel.view</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="controller.template_attribute_listener"/>
-          <argument>onKernelView</argument>
-        </argument>
-        <argument>-128</argument>
-      </call>
-      <call method="addListener">
-        <argument>Symfony\Component\Mailer\Event\MessageEvent</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="twig.mailer.message_listener"/>
-          <argument>onMessage</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListener">
         <argument>kernel.request</argument>
         <argument type="collection">
           <argument type="service_closure" id="doctrine.dbal.idle_connection_listener"/>
@@ -2104,7 +2141,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.vEsvNyi"/>
+      <argument type="service" id=".service_locator.U2ruBO0"/>
     </service>
     <service id="routing.resolver" class="Symfony\Component\Config\Loader\LoaderResolver">
       <call method="addLoader">
@@ -2268,7 +2305,7 @@
       </argument>
     </service>
     <service id="Symfony\Bundle\FrameworkBundle\Controller\TemplateController" class="Symfony\Bundle\FrameworkBundle\Controller\TemplateController" public="true">
-      <argument type="service" id="twig" on-invalid="ignore"/>
+      <argument>null</argument>
     </service>
     <service id="property_accessor" class="Symfony\Component\PropertyAccess\PropertyAccessor">
       <argument>3</argument>
@@ -2513,7 +2550,7 @@
           <factory class="Symfony\Component\ErrorHandler\ErrorRenderer\SerializerErrorRenderer" method="getPreferredFormat"/>
         </service>
       </argument>
-      <argument type="service" id="twig.error_renderer.html"/>
+      <argument type="service" id="error_handler.error_renderer.html"/>
       <argument type="service">
         <service>
           <argument type="service" id="request_stack"/>
@@ -2714,9 +2751,6 @@
       <tag name="twig.runtime"/>
       <argument type="service" id="security.csrf.same_origin_token_manager"/>
     </service>
-    <service id="twig.extension.security_csrf" class="Symfony\Bridge\Twig\Extension\CsrfExtension">
-      <tag name="twig.extension"/>
-    </service>
     <service id="security.csrf.same_origin_token_manager" class="Symfony\Component\Security\Csrf\SameOriginCsrfTokenManager">
       <tag name="monolog.logger" channel="request"/>
       <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse"/>
@@ -2816,7 +2850,7 @@
       <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType"/>
       <argument type="service" id="validator"/>
       <argument>false</argument>
-      <argument type="service" id="twig.form.renderer" on-invalid="ignore"/>
+      <argument>null</argument>
       <argument>null</argument>
     </service>
     <service id="form.type_extension.repeated.validator" class="Symfony\Component\Form\Extension\Validator\Type\RepeatedTypeValidatorExtension">
@@ -3174,7 +3208,7 @@
     </service>
     <service id="validator.not_compromised_password" class="Symfony\Component\Validator\Constraints\NotCompromisedPasswordValidator">
       <tag name="validator.constraint_validator"/>
-      <argument>null</argument>
+      <argument type="service" id="http_client.uri_template" on-invalid="null"/>
       <argument>UTF-8</argument>
       <argument>true</argument>
       <argument>null</argument>
@@ -3199,337 +3233,6 @@
         <argument type="service" id="mime_types"/>
       </call>
     </service>
-    <service id="twig" class="Twig\Environment">
-      <tag name="container.preload" class="Twig\Cache\FilesystemCache"/>
-      <tag name="container.preload" class="Twig\Extension\CoreExtension"/>
-      <tag name="container.preload" class="Twig\Extension\EscaperExtension"/>
-      <tag name="container.preload" class="Twig\Extension\OptimizerExtension"/>
-      <tag name="container.preload" class="Twig\Extension\StagingExtension"/>
-      <tag name="container.preload" class="Twig\ExtensionSet"/>
-      <tag name="container.preload" class="Twig\Template"/>
-      <tag name="container.preload" class="Twig\TemplateWrapper"/>
-      <tag name="kernel.reset" method="resetGlobals"/>
-      <argument type="service" id="twig.loader.native_filesystem"/>
-      <argument type="collection">
-        <argument key="cache">/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/twig</argument>
-        <argument key="charset">UTF-8</argument>
-        <argument key="debug">true</argument>
-        <argument key="strict_variables">true</argument>
-        <argument key="autoescape">name</argument>
-      </argument>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.security_csrf"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.profiler"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.trans"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.assets"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.routing"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.yaml"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.debug.stopwatch"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.expression"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.httpkernel"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.httpfoundation"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.weblink"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.serializer"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.form"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.logout_url"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.security"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="twig.extension.debug"/>
-      </call>
-      <call method="addExtension">
-        <argument type="service" id="doctrine.twig.doctrine_extension"/>
-      </call>
-      <call method="addGlobal">
-        <argument>app</argument>
-        <argument type="service" id="twig.app_variable"/>
-      </call>
-      <call method="addRuntimeLoader">
-        <argument type="service" id="twig.runtime_loader"/>
-      </call>
-      <call method="registerUndefinedFilterCallback">
-        <argument type="collection">
-          <argument type="service" id="twig.missing_extension_suggestor"/>
-          <argument>suggestFilter</argument>
-        </argument>
-      </call>
-      <call method="registerUndefinedFunctionCallback">
-        <argument type="collection">
-          <argument type="service" id="twig.missing_extension_suggestor"/>
-          <argument>suggestFunction</argument>
-        </argument>
-      </call>
-      <call method="registerUndefinedTokenParserCallback">
-        <argument type="collection">
-          <argument type="service" id="twig.missing_extension_suggestor"/>
-          <argument>suggestTag</argument>
-        </argument>
-      </call>
-      <configurator service="twig.configurator.environment" method="configure"/>
-    </service>
-    <service id="twig.app_variable" class="Symfony\Bridge\Twig\AppVariable">
-      <call method="setEnvironment">
-        <argument>dev</argument>
-      </call>
-      <call method="setDebug">
-        <argument>true</argument>
-      </call>
-      <call method="setTokenStorage">
-        <argument type="service" id="security.token_storage" on-invalid="ignore"/>
-      </call>
-      <call method="setRequestStack">
-        <argument type="service" id="request_stack" on-invalid="ignore"/>
-      </call>
-      <call method="setEnabledLocales">
-        <argument type="collection"/>
-      </call>
-    </service>
-    <service id="twig.template_iterator" class="Symfony\Bundle\TwigBundle\TemplateIterator">
-      <argument type="service" id="kernel"/>
-      <argument type="collection">
-        <argument key="/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/twig-bridge/Resources/views/Email">email</argument>
-        <argument key="/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/twig-bridge/Resources/views/Form">null</argument>
-      </argument>
-      <argument>/Users/mikado/WebstormProjects/Chatbot/back/templates</argument>
-      <argument type="collection">
-        <argument>*.twig</argument>
-      </argument>
-    </service>
-    <service id="twig.template_cache_warmer" class="Symfony\Bundle\TwigBundle\CacheWarmer\TemplateCacheWarmer">
-      <tag name="kernel.cache_warmer"/>
-      <tag name="container.service_subscriber" id="twig"/>
-      <argument type="service" id=".service_locator.lMv3Dwi.twig.template_cache_warmer"/>
-      <argument type="service" id="twig.template_iterator"/>
-    </service>
-    <service id="twig.loader.native_filesystem" class="Twig\Loader\FilesystemLoader">
-      <tag name="twig.loader"/>
-      <argument type="collection"/>
-      <argument>/Users/mikado/WebstormProjects/Chatbot/back</argument>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/doctrine/doctrine-bundle/templates</argument>
-        <argument>Doctrine</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/doctrine/doctrine-bundle/templates</argument>
-        <argument>!Doctrine</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/doctrine/doctrine-migrations-bundle/templates</argument>
-        <argument>DoctrineMigrations</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/doctrine/doctrine-migrations-bundle/templates</argument>
-        <argument>!DoctrineMigrations</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/security-bundle/Resources/views</argument>
-        <argument>Security</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/security-bundle/Resources/views</argument>
-        <argument>!Security</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/maker-bundle/templates</argument>
-        <argument>Maker</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/maker-bundle/templates</argument>
-        <argument>!Maker</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/api-platform/symfony/Bundle/Resources/views</argument>
-        <argument>ApiPlatform</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/api-platform/symfony/Bundle/Resources/views</argument>
-        <argument>!ApiPlatform</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/templates</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/twig-bridge/Resources/views/Email</argument>
-        <argument>email</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/twig-bridge/Resources/views/Email</argument>
-        <argument>!email</argument>
-      </call>
-      <call method="addPath">
-        <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/twig-bridge/Resources/views/Form</argument>
-      </call>
-    </service>
-    <service id="twig.loader.chain" class="Twig\Loader\ChainLoader"/>
-    <service id="twig.extension.profiler" class="Symfony\Bridge\Twig\Extension\ProfilerExtension">
-      <tag name="twig.extension"/>
-      <argument type="service" id="twig.profile"/>
-      <argument type="service" id="debug.stopwatch" on-invalid="ignore"/>
-    </service>
-    <service id="twig.profile" class="Twig\Profiler\Profile"/>
-    <service id="data_collector.twig" class="Symfony\Bridge\Twig\DataCollector\TwigDataCollector">
-      <tag name="data_collector" template="@WebProfiler/Collector/twig.html.twig" id="twig" priority="257"/>
-      <argument type="service" id="twig.profile"/>
-      <argument type="service" id="twig"/>
-    </service>
-    <service id="twig.extension.trans" class="Symfony\Bridge\Twig\Extension\TranslationExtension">
-      <tag name="twig.extension"/>
-      <argument>null</argument>
-    </service>
-    <service id="twig.extension.assets" class="Symfony\Bridge\Twig\Extension\AssetExtension">
-      <tag name="twig.extension"/>
-      <argument type="service" id="assets.packages"/>
-    </service>
-    <service id="twig.extension.routing" class="Symfony\Bridge\Twig\Extension\RoutingExtension">
-      <tag name="twig.extension"/>
-      <argument type="service" id="router.default"/>
-    </service>
-    <service id="twig.extension.yaml" class="Symfony\Bridge\Twig\Extension\YamlExtension">
-      <tag name="twig.extension"/>
-    </service>
-    <service id="twig.extension.debug.stopwatch" class="Symfony\Bridge\Twig\Extension\StopwatchExtension">
-      <tag name="twig.extension"/>
-      <argument type="service" id="debug.stopwatch" on-invalid="ignore"/>
-      <argument>true</argument>
-    </service>
-    <service id="twig.extension.expression" class="Symfony\Bridge\Twig\Extension\ExpressionExtension">
-      <tag name="twig.extension"/>
-    </service>
-    <service id="twig.extension.htmlsanitizer" class="Symfony\Bridge\Twig\Extension\HtmlSanitizerExtension">
-      <argument type="service" id="api_platform.filter_locator"/>
-    </service>
-    <service id="twig.extension.httpkernel" class="Symfony\Bridge\Twig\Extension\HttpKernelExtension">
-      <tag name="twig.extension"/>
-    </service>
-    <service id="twig.runtime.httpkernel" class="Symfony\Bridge\Twig\Extension\HttpKernelRuntime">
-      <tag name="twig.runtime"/>
-      <argument type="service" id="fragment.handler"/>
-      <argument type="service" id="fragment.uri_generator" on-invalid="ignore"/>
-    </service>
-    <service id="twig.extension.httpfoundation" class="Symfony\Bridge\Twig\Extension\HttpFoundationExtension">
-      <tag name="twig.extension"/>
-      <argument type="service" id="url_helper"/>
-    </service>
-    <service id="twig.extension.debug" class="Twig\Extension\DebugExtension">
-      <tag name="twig.extension"/>
-    </service>
-    <service id="twig.extension.weblink" class="Symfony\Bridge\Twig\Extension\WebLinkExtension">
-      <tag name="twig.extension"/>
-      <argument type="service" id="request_stack"/>
-    </service>
-    <service id="twig.configurator.environment" class="Symfony\Bundle\TwigBundle\DependencyInjection\Configurator\EnvironmentConfigurator">
-      <argument>F j, Y H:i</argument>
-      <argument>%d days</argument>
-      <argument>null</argument>
-      <argument>0</argument>
-      <argument>.</argument>
-      <argument>,</argument>
-    </service>
-    <service id="twig.runtime_loader" class="Twig\RuntimeLoader\ContainerRuntimeLoader">
-      <argument type="service" id=".service_locator.DG7Og79"/>
-    </service>
-    <service id="twig.error_renderer.html" class="Symfony\Bridge\Twig\ErrorRenderer\TwigErrorRenderer">
-      <argument type="service" id="twig"/>
-      <argument type="service" id="error_handler.error_renderer.html"/>
-      <argument type="service">
-        <service class="bool">
-          <argument type="service" id="request_stack"/>
-          <argument>true</argument>
-          <factory class="Symfony\Bridge\Twig\ErrorRenderer\TwigErrorRenderer" method="isDebug"/>
-        </service>
-      </argument>
-    </service>
-    <service id="twig.runtime.serializer" class="Symfony\Bridge\Twig\Extension\SerializerRuntime">
-      <tag name="twig.runtime"/>
-      <argument type="service" id="serializer"/>
-    </service>
-    <service id="twig.extension.serializer" class="Symfony\Bridge\Twig\Extension\SerializerExtension">
-      <tag name="twig.extension"/>
-    </service>
-    <service id="controller.template_attribute_listener" class="Symfony\Bridge\Twig\EventListener\TemplateAttributeListener">
-      <tag name="kernel.event_subscriber"/>
-      <argument type="service" id="twig"/>
-    </service>
-    <service id="twig.extension.form" class="Symfony\Bridge\Twig\Extension\FormExtension">
-      <tag name="twig.extension"/>
-      <argument>null</argument>
-    </service>
-    <service id="twig.form.engine" class="Symfony\Bridge\Twig\Form\TwigRendererEngine">
-      <tag name="kernel.reset" method="reset"/>
-      <argument>%twig.form.resources%</argument>
-      <argument type="service" id="twig"/>
-    </service>
-    <service id="twig.form.renderer" class="Symfony\Component\Form\FormRenderer">
-      <tag name="twig.runtime"/>
-      <argument type="service" id="twig.form.engine"/>
-      <argument type="service" id="security.csrf.same_origin_token_manager" on-invalid="null"/>
-    </service>
-    <service id="twig.command.debug" class="Symfony\Bridge\Twig\Command\DebugCommand">
-      <tag name="console.command"/>
-      <tag name="container.no_preload"/>
-      <argument type="service" id="twig"/>
-      <argument>/Users/mikado/WebstormProjects/Chatbot/back</argument>
-      <argument>%kernel.bundles_metadata%</argument>
-      <argument>/Users/mikado/WebstormProjects/Chatbot/back/templates</argument>
-      <argument type="service" id="debug.file_link_formatter" on-invalid="null"/>
-      <call method="setName">
-        <argument>debug:twig</argument>
-      </call>
-      <call method="setDescription">
-        <argument>Show a list of twig functions, filters, globals and tests</argument>
-      </call>
-    </service>
-    <service id="twig.command.lint" class="Symfony\Bundle\TwigBundle\Command\LintCommand">
-      <tag name="console.command"/>
-      <tag name="container.no_preload"/>
-      <argument type="service" id="twig"/>
-      <argument type="collection">
-        <argument>*.twig</argument>
-      </argument>
-      <call method="setName">
-        <argument>lint:twig</argument>
-      </call>
-      <call method="setDescription">
-        <argument>Lint a Twig template and outputs encountered errors</argument>
-      </call>
-    </service>
-    <service id="twig.mailer.message_listener" class="Symfony\Component\Mailer\EventListener\MessageListener">
-      <tag name="kernel.event_subscriber"/>
-      <argument>null</argument>
-      <argument type="service" id="twig.mime_body_renderer"/>
-    </service>
-    <service id="twig.mime_body_renderer" class="Symfony\Bridge\Twig\Mime\BodyRenderer">
-      <argument type="service" id="twig"/>
-    </service>
-    <service id="twig.missing_extension_suggestor" class="Twig\Extra\TwigExtraBundle\MissingExtensionSuggestor"/>
     <service id="data_collector.doctrine" class="Doctrine\Bundle\DoctrineBundle\DataCollector\DoctrineDataCollector">
       <tag name="data_collector" template="@Doctrine/Collector/db.html.twig" id="db" priority="250"/>
       <argument type="service" id="doctrine"/>
@@ -4225,8 +3928,8 @@
       <argument type="service" id=".service_locator.NXTTdTW"/>
       <argument type="collection">
         <argument key="dev">null</argument>
-        <argument key="api" type="service" id=".service_locator.a.GIXNm"/>
-        <argument key="main" type="service" id=".service_locator.0S5um9s"/>
+        <argument key="api" type="service" id=".service_locator.vvfQ0sh"/>
+        <argument key="main" type="service" id=".service_locator.R7WgfnC"/>
       </argument>
     </service>
     <service id="security.user_value_resolver" class="Symfony\Component\Security\Http\Controller\UserValueResolver">
@@ -4684,7 +4387,7 @@
     </service>
     <service id="security.access_token_handler.oidc_user_info.http_client" class="Symfony\Contracts\HttpClient\HttpClientInterface" abstract="true">
       <argument type="abstract">http client options</argument>
-      <factory service="http_client" method="withOptions"/>
+      <factory service="http_client.uri_template" method="withOptions"/>
     </service>
     <service id="security.access_token_handler.oidc_user_info" class="Symfony\Component\Security\Http\AccessToken\Oidc\OidcUserInfoTokenHandler" abstract="true">
       <argument type="abstract">http client</argument>
@@ -4740,15 +4443,6 @@
     </service>
     <service id="security.access_token_handler.oidc.signature.PS512" class="Jose\Component\Signature\Algorithm\PS512">
       <tag name="security.access_token_handler.oidc.signature_algorithm"/>
-    </service>
-    <service id="twig.extension.logout_url" class="Symfony\Bridge\Twig\Extension\LogoutUrlExtension">
-      <tag name="twig.extension"/>
-      <argument type="service" id="security.logout_url_generator"/>
-    </service>
-    <service id="twig.extension.security" class="Symfony\Bridge\Twig\Extension\SecurityExtension">
-      <tag name="twig.extension"/>
-      <argument type="service" id="security.authorization_checker" on-invalid="ignore"/>
-      <argument type="service" id="security.impersonate_url_generator" on-invalid="ignore"/>
     </service>
     <service id="data_collector.security" class="Symfony\Bundle\SecurityBundle\DataCollector\SecurityDataCollector">
       <tag name="data_collector" template="@Security/Collector/security.html.twig" id="security" priority="270"/>
@@ -4951,11 +4645,11 @@
       <argument type="service" id="logger" on-invalid="null"/>
       <argument>true</argument>
     </service>
-    <service id=".service_locator.a.GIXNm" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.vvfQ0sh" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="debug.security.authenticator.jwt.api" type="service_closure" id="debug.security.authenticator.jwt.api"/>
-        <argument key="debug.security.authenticator.json_login.api" type="service_closure" id="debug.security.authenticator.json_login.api"/>
+        <argument key="security.authenticator.jwt.api" type="service_closure" id="security.authenticator.jwt.api"/>
+        <argument key="security.authenticator.json_login.api" type="service_closure" id="security.authenticator.json_login.api"/>
       </argument>
     </service>
     <service id="security.firewall.map.context.api" class="Symfony\Bundle\SecurityBundle\Security\FirewallContext">
@@ -5205,11 +4899,11 @@
       <argument type="service" id="logger" on-invalid="null"/>
       <argument>false</argument>
     </service>
-    <service id=".service_locator.0S5um9s" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.R7WgfnC" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="debug.security.authenticator.json_login.main" type="service_closure" id="debug.security.authenticator.json_login.main"/>
-        <argument key="debug.security.authenticator.remember_me.main" type="service_closure" id="debug.security.authenticator.remember_me.main"/>
+        <argument key="security.authenticator.json_login.main" type="service_closure" id="security.authenticator.json_login.main"/>
+        <argument key="security.authenticator.remember_me.main" type="service_closure" id="security.authenticator.remember_me.main"/>
       </argument>
     </service>
     <service id="security.firewall.map.context.main" class="Symfony\Bundle\SecurityBundle\Security\LazyFirewallContext">
@@ -5272,7 +4966,7 @@
       <argument type="service" id="maker.autoloader_util"/>
       <argument type="service" id="maker.file_link_formatter"/>
       <argument>/Users/mikado/WebstormProjects/Chatbot/back</argument>
-      <argument>/Users/mikado/WebstormProjects/Chatbot/back/templates</argument>
+      <argument>null</argument>
     </service>
     <service id="maker.autoloader_finder" class="Symfony\Bundle\MakerBundle\Util\ComposerAutoloaderFinder">
       <argument>App</argument>
@@ -6089,9 +5783,9 @@
       <argument type="service" id="serializer.encoder.yaml" on-invalid="null"/>
     </service>
     <service id="api_platform.swagger_ui.context" class="ApiPlatform\Symfony\Bundle\SwaggerUi\SwaggerUiContext">
+      <argument>false</argument>
       <argument>true</argument>
-      <argument>true</argument>
-      <argument>true</argument>
+      <argument>false</argument>
       <argument>false</argument>
       <argument>false</argument>
       <argument>false</argument>
@@ -6100,7 +5794,7 @@
     </service>
     <service id="api_platform.swagger_ui.processor" class="ApiPlatform\Symfony\Bundle\SwaggerUi\SwaggerUiProcessor">
       <tag name="api_platform.state_processor" priority="-100" key="api_platform.swagger_ui.processor"/>
-      <argument type="service" id="twig" on-invalid="null"/>
+      <argument>null</argument>
       <argument type="service" id="router.default"/>
       <argument type="service" id="serializer"/>
       <argument type="service" id="api_platform.openapi.options"/>
@@ -6112,7 +5806,7 @@
     </service>
     <service id="api_platform.swagger_ui.action" class="ApiPlatform\Symfony\Bundle\SwaggerUi\SwaggerUiAction" public="true">
       <argument type="service" id="api_platform.metadata.resource.metadata_collection_factory.cached"/>
-      <argument type="service" id="twig" on-invalid="null"/>
+      <argument>null</argument>
       <argument type="service" id="router.default"/>
       <argument type="service" id="serializer"/>
       <argument type="service" id="lexik_jwt_authentication.api_platform.openapi.factory"/>
@@ -6122,10 +5816,6 @@
       <argument></argument>
       <argument></argument>
       <argument>false</argument>
-    </service>
-    <service id="api_platform.swagger_ui.provider" class="ApiPlatform\Symfony\Bundle\SwaggerUi\SwaggerUiProvider">
-      <argument type="service" id="api_platform.swagger_ui.provider.inner"/>
-      <argument type="service" id="lexik_jwt_authentication.api_platform.openapi.factory"/>
     </service>
     <service id="api_platform.jsonld.action.context" class="ApiPlatform\JsonLd\Action\ContextAction" public="true">
       <argument type="service" id="api_platform.jsonld.context_builder"/>
@@ -7423,19 +7113,7 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.xkU66BY" method="withContext"/>
     </service>
-    <service id=".service_locator.Exos.4o" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="jwtManager" type="service_closure" id="lexik_jwt_authentication.jwt_manager"/>
-      </argument>
-    </service>
-    <service id=".service_locator.Exos.4o.App\Controller\SecurityController::login()" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\SecurityController::login()"/>
-      <argument>App\Controller\SecurityController::login()</argument>
-      <argument type="service" id="service_container"/>
-      <factory service=".service_locator.Exos.4o" method="withContext"/>
-    </service>
-    <service id=".service_locator.vEsvNyi" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.U2ruBO0" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.zHyJIs5.kernel::registerContainerConfiguration()"/>
@@ -7445,13 +7123,11 @@
         <argument key="App\Controller\ConversationController::get" type="service_closure" id=".service_locator.xkU66BY.App\Controller\ConversationController::get()"/>
         <argument key="App\Controller\ConversationController::messages" type="service_closure" id=".service_locator.xkU66BY.App\Controller\ConversationController::messages()"/>
         <argument key="App\Controller\ConversationController::addMessage" type="service_closure" id=".service_locator.xkU66BY.App\Controller\ConversationController::addMessage()"/>
-        <argument key="App\Controller\SecurityController::login" type="service_closure" id=".service_locator.Exos.4o.App\Controller\SecurityController::login()"/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.zHyJIs5.kernel::registerContainerConfiguration()"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.zHyJIs5.kernel::loadRoutes()"/>
         <argument key="App\Controller\ConversationController:get" type="service_closure" id=".service_locator.xkU66BY.App\Controller\ConversationController::get()"/>
         <argument key="App\Controller\ConversationController:messages" type="service_closure" id=".service_locator.xkU66BY.App\Controller\ConversationController::messages()"/>
         <argument key="App\Controller\ConversationController:addMessage" type="service_closure" id=".service_locator.xkU66BY.App\Controller\ConversationController::addMessage()"/>
-        <argument key="App\Controller\SecurityController:login" type="service_closure" id=".service_locator.Exos.4o.App\Controller\SecurityController::login()"/>
       </argument>
     </service>
     <service id=".service_locator.ea.H0ae" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -7646,7 +7322,6 @@
         <argument key="http_kernel" type="service_closure" id="http_kernel" on-invalid="ignore"/>
         <argument key="serializer" type="service_closure" id="serializer" on-invalid="ignore"/>
         <argument key="security.authorization_checker" type="service_closure" id="security.authorization_checker" on-invalid="ignore"/>
-        <argument key="twig" type="service_closure" id="twig" on-invalid="ignore"/>
         <argument key="form.factory" type="service_closure" id="form.factory" on-invalid="ignore"/>
         <argument key="security.token_storage" type="service_closure" id="security.token_storage" on-invalid="ignore"/>
         <argument key="security.csrf.token_manager" type="service_closure" id="security.csrf.same_origin_token_manager" on-invalid="ignore"/>
@@ -7701,18 +7376,6 @@
       <argument>router.cache_warmer</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.qXR9Hv0" method="withContext"/>
-    </service>
-    <service id=".service_locator.lMv3Dwi" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="twig" type="service_closure" id="twig"/>
-      </argument>
-    </service>
-    <service id=".service_locator.lMv3Dwi.twig.template_cache_warmer" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="twig.template_cache_warmer"/>
-      <argument>twig.template_cache_warmer</argument>
-      <argument type="service" id="service_container"/>
-      <factory service=".service_locator.lMv3Dwi" method="withContext"/>
     </service>
     <service id=".service_locator.vsAfDr." class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -7863,6 +7526,12 @@
       <argument type="service" id="api_platform.metadata.property.metadata_factory.cached"/>
       <argument type="service" id="api_platform.resource_class_resolver"/>
     </service>
+    <service id="http_client.uri_template.inner" class="Symfony\Contracts\HttpClient\HttpClientInterface">
+      <argument type="collection">
+        <argument type="service" id="http_client.transport"/>
+      </argument>
+      <factory function="current"/>
+    </service>
     <service id="debug.event_dispatcher.inner" class="Symfony\Component\EventDispatcher\EventDispatcher"/>
     <service id="debug.controller_resolver.inner" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver">
       <argument type="service" id="service_container"/>
@@ -7931,10 +7600,6 @@
       <argument type="service" id="api_platform.metadata.resource.metadata_collection_factory.cached"/>
       <argument>true</argument>
     </service>
-    <service id="api_platform.swagger_ui.provider.inner" class="ApiPlatform\State\Provider\ReadProvider">
-      <argument type="service" id="api_platform.state_provider.locator"/>
-      <argument type="service" id="api_platform.openapi.serializer_context_builder"/>
-    </service>
     <service id="api_platform.hydra.json_schema.schema_factory.inner" class="ApiPlatform\JsonSchema\SchemaFactory">
       <argument type="service" id="api_platform.metadata.resource.metadata_collection_factory.cached"/>
       <argument type="service" id="api_platform.metadata.property.name_collection_factory.cached"/>
@@ -7951,6 +7616,10 @@
       <argument>null</argument>
       <argument>%api_platform.serializer.default_context%</argument>
     </service>
+    <service id="api_platform.state_provider.access_checker.inner" class="ApiPlatform\State\Provider\ReadProvider">
+      <argument type="service" id="api_platform.state_provider.locator"/>
+      <argument type="service" id="api_platform.openapi.serializer_context_builder"/>
+    </service>
     <service id="api_platform.state_provider.access_checker.post_deserialize.inner" class="ApiPlatform\State\Provider\DeserializeProvider">
       <argument type="service" id="api_platform.state_provider.security_parameter"/>
       <argument type="service" id="serializer"/>
@@ -7958,8 +7627,8 @@
       <argument>null</argument>
     </service>
     <service id="api_platform.state_provider.security_parameter.inner" class="ApiPlatform\Symfony\Security\State\AccessCheckerProvider">
-      <tag name="container.decorator" id="api_platform.state_provider.read" inner="api_platform.swagger_ui.provider.inner"/>
-      <argument type="service" id="api_platform.swagger_ui.provider"/>
+      <tag name="container.decorator" id="api_platform.state_provider.read" inner="api_platform.state_provider.access_checker.inner"/>
+      <argument type="service" id="api_platform.state_provider.access_checker.inner"/>
       <argument type="service" id="api_platform.security.resource_access_checker"/>
     </service>
     <service id="api_platform.state_provider.access_checker.post_validate.inner" class="ApiPlatform\Symfony\Validator\State\ValidateProvider">
@@ -8211,20 +7880,6 @@
       <argument>Test Mailer transports by sending an email</argument>
       <argument>false</argument>
       <argument type="service_closure" id="console.command.mailer_test"/>
-    </service>
-    <service id=".twig.command.debug.lazy" class="Symfony\Component\Console\Command\LazyCommand">
-      <argument>debug:twig</argument>
-      <argument type="collection"/>
-      <argument>Show a list of twig functions, filters, globals and tests</argument>
-      <argument>false</argument>
-      <argument type="service_closure" id="twig.command.debug"/>
-    </service>
-    <service id=".twig.command.lint.lazy" class="Symfony\Component\Console\Command\LazyCommand">
-      <argument>lint:twig</argument>
-      <argument type="collection"/>
-      <argument>Lint a Twig template and outputs encountered errors</argument>
-      <argument>false</argument>
-      <argument type="service_closure" id="twig.command.lint"/>
     </service>
     <service id=".doctrine_migrations.diff_command.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>doctrine:migrations:diff</argument>
@@ -8576,7 +8231,7 @@
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <tag name="container.no_preload"/>
-      <argument type="service" id=".service_locator.PFnbVmK"/>
+      <argument type="service" id=".service_locator.EJVmO2N"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -8608,8 +8263,6 @@
         <argument key="secrets:decrypt-to-local">console.command.secrets_decrypt_to_local</argument>
         <argument key="secrets:encrypt-from-local">console.command.secrets_encrypt_from_local</argument>
         <argument key="mailer:test">console.command.mailer_test</argument>
-        <argument key="debug:twig">twig.command.debug</argument>
-        <argument key="lint:twig">twig.command.lint</argument>
         <argument key="doctrine:database:create">doctrine.database_create_command</argument>
         <argument key="doctrine:database:drop">doctrine.database_drop_command</argument>
         <argument key="doctrine:query:sql">doctrine.query_sql_command</argument>
@@ -8684,7 +8337,7 @@
         <argument key="make:state-provider">maker.auto_command.make_state_provider</argument>
       </argument>
     </service>
-    <service id=".service_locator.PFnbVmK" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.EJVmO2N" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="console.command.about" type="service_closure" id=".console.command.about.lazy"/>
@@ -8717,8 +8370,6 @@
         <argument key="console.command.secrets_decrypt_to_local" type="service_closure" id=".console.command.secrets_decrypt_to_local.lazy"/>
         <argument key="console.command.secrets_encrypt_from_local" type="service_closure" id=".console.command.secrets_encrypt_from_local.lazy"/>
         <argument key="console.command.mailer_test" type="service_closure" id=".console.command.mailer_test.lazy"/>
-        <argument key="twig.command.debug" type="service_closure" id=".twig.command.debug.lazy"/>
-        <argument key="twig.command.lint" type="service_closure" id=".twig.command.lint.lazy"/>
         <argument key="doctrine.database_create_command" type="service_closure" id="doctrine.database_create_command"/>
         <argument key="doctrine.database_drop_command" type="service_closure" id="doctrine.database_drop_command"/>
         <argument key="doctrine.query_sql_command" type="service_closure" id="doctrine.query_sql_command"/>
@@ -8790,15 +8441,6 @@
         <argument key="maker.auto_command.make_state_provider" type="service_closure" id=".maker.auto_command.make_state_provider.lazy"/>
       </argument>
     </service>
-    <service id=".service_locator.DG7Og79" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="Symfony\Bridge\Twig\Extension\CsrfRuntime" type="service_closure" id="twig.runtime.security_csrf"/>
-        <argument key="Symfony\Bridge\Twig\Extension\HttpKernelRuntime" type="service_closure" id="twig.runtime.httpkernel"/>
-        <argument key="Symfony\Bridge\Twig\Extension\SerializerRuntime" type="service_closure" id="twig.runtime.serializer"/>
-        <argument key="Symfony\Component\Form\FormRenderer" type="service_closure" id="twig.form.renderer"/>
-      </argument>
-    </service>
     <service id="App\Kernel" alias="kernel" public="true"/>
     <service id="Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface" alias="parameter_bag"/>
     <service id="Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface" alias="parameter_bag"/>
@@ -8818,7 +8460,7 @@
     <service id="Symfony\Component\Clock\ClockInterface" alias="clock"/>
     <service id="Psr\Clock\ClockInterface" alias="clock"/>
     <service id="Symfony\Component\HttpKernel\Fragment\FragmentUriGeneratorInterface" alias="fragment.uri_generator"/>
-    <service id="error_renderer.html" alias="twig.error_renderer.html"/>
+    <service id="error_renderer.html" alias="error_handler.error_renderer.html"/>
     <service id="error_renderer" alias="error_handler.error_renderer.serializer"/>
     <service id=".Psr\Container\ContainerInterface $parameter_bag" alias="parameter_bag"/>
     <service id="Psr\Container\ContainerInterface $parameterBag" alias="parameter_bag"/>
@@ -8827,6 +8469,7 @@
     <service id="Symfony\Contracts\Cache\CacheInterface" alias="cache.app"/>
     <service id="Symfony\Contracts\Cache\TagAwareCacheInterface" alias="cache.app.taggable"/>
     <service id="Symfony\Component\Asset\Packages" alias="assets.packages"/>
+    <service id="Symfony\Contracts\HttpClient\HttpClientInterface" alias="http_client.uri_template"/>
     <service id="mailer" alias="mailer.mailer"/>
     <service id="Symfony\Component\Mailer\MailerInterface" alias="mailer.mailer"/>
     <service id="Symfony\Component\Mailer\Transport\TransportInterface" alias="mailer.default_transport"/>
@@ -8881,8 +8524,6 @@
     <service id="validator.mapping.class_metadata_factory" alias="validator"/>
     <service id="Symfony\Component\Mime\MimeTypesInterface" alias="mime_types"/>
     <service id="Symfony\Component\Mime\MimeTypeGuesserInterface" alias="mime_types"/>
-    <service id="Twig\Environment" alias="twig"/>
-    <service id="Symfony\Component\Mime\BodyRendererInterface" alias="twig.mime_body_renderer"/>
     <service id="Doctrine\DBAL\Connection" alias="doctrine.dbal.default_connection"/>
     <service id="Doctrine\Persistence\ManagerRegistry" alias="doctrine"/>
     <service id="Doctrine\Common\Persistence\ManagerRegistry" alias="doctrine"/>
@@ -8989,9 +8630,7 @@
     <service id="Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface" alias="lexik_jwt_authentication.encoder.lcobucci"/>
     <service id="lexik_jwt_authentication.key_loader" alias="lexik_jwt_authentication.key_loader.raw" public="true"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.pRu6x_4" public="true"/>
-    <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.vEsvNyi"/>
-    <service id="twig.loader" alias="twig.loader.native_filesystem"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.U2ruBO0"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.BxSdgVt"/>
     <service id="api_platform.name_converter" alias="api_platform.hydra.name_converter.hydra_prefix"/>
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
@@ -9034,11 +8673,11 @@
     <service id="api_platform.metadata.property.metadata_factory.yaml.inner" alias="api_platform.metadata.property.metadata_factory.attribute"/>
     <service id="api_platform.metadata.property.metadata_factory.validator.inner" alias="api_platform.metadata.property.metadata_factory.yaml"/>
     <service id="api_platform.json_schema.metadata.property.metadata_factory.schema.inner" alias="api_platform.metadata.property.metadata_factory.validator"/>
+    <service id="http_client" alias="http_client.uri_template"/>
     <service id="event_dispatcher" alias="debug.event_dispatcher" public="true"/>
     <service id="controller_resolver" alias="debug.controller_resolver"/>
     <service id="argument_resolver" alias="debug.argument_resolver"/>
     <service id="security.csrf.token_manager" alias="security.csrf.same_origin_token_manager"/>
-    <service id="twig.error_renderer.html.inner" alias="error_handler.error_renderer.html"/>
     <service id="security.access.decision_manager" alias="debug.security.access.decision_manager"/>
     <service id="security.firewall.authenticator.api" alias="debug.security.firewall.authenticator.api"/>
     <service id="security.firewall.authenticator.main" alias="debug.security.firewall.authenticator.main"/>
@@ -9051,13 +8690,12 @@
     <service id="api_platform.metadata.resource.name_collection_factory.yaml.inner" alias="api_platform.metadata.resource.name_collection_factory.class_name"/>
     <service id="api_platform.metadata.property.name_collection_factory.yaml.inner" alias="api_platform.metadata.property.name_collection_factory.concerns"/>
     <service id="api_platform.openapi.serializer_context_builder.inner" alias="api_platform.serializer.context_builder.filter"/>
-    <service id="api_platform.state_provider.read" alias="api_platform.state_provider.security_parameter"/>
     <service id="api_platform.json_schema.schema_factory" alias="api_platform.json_schema.backward_compatible_schema_factory"/>
     <service id="api_platform.hydra.normalizer.collection" alias="api_platform.hydra.normalizer.collection_filters"/>
     <service id="api_platform.hydra.normalizer.collection_filters.inner" alias="api_platform.hydra.normalizer.partial_collection_view"/>
     <service id="api_platform.hydra.name_converter.hydra_prefix.inner" alias="serializer.name_converter.metadata_aware"/>
     <service id="api_platform.http_cache.processor.add_headers.inner" alias="api_platform.state_processor.add_link_header"/>
-    <service id="api_platform.state_provider.access_checker.inner" alias="api_platform.swagger_ui.provider"/>
+    <service id="api_platform.state_provider.read" alias="api_platform.state_provider.security_parameter"/>
     <service id="api_platform.state_provider.deserialize" alias="api_platform.state_provider.access_checker.post_deserialize"/>
     <service id="api_platform.state_provider.access_checker" alias="api_platform.state_provider.security_parameter"/>
     <service id="api_platform.state_provider.validate" alias="api_platform.state_provider.access_checker.post_validate"/>
@@ -9076,7 +8714,6 @@
     <service id=".service_locator.GIuJv7e" alias="api_platform.filter_locator"/>
     <service id=".service_locator.n_ENPtW" alias=".service_locator.zHyJIs5"/>
     <service id=".service_locator.wplrsJU" alias=".service_locator.xkU66BY"/>
-    <service id=".service_locator.5UGwLY0" alias=".service_locator.Exos.4o"/>
-    <service id=".service_locator.9nvaCmp" alias=".service_locator.ZyP9f7K"/>
+    <service id=".service_locator.v.XHK_4" alias=".service_locator.ZyP9f7K"/>
   </services>
 </container>

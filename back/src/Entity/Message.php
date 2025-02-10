@@ -14,10 +14,6 @@ class Message
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Conversation::class, inversedBy: 'messages')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Conversation $conversation = null;
-
     #[ORM\Column(type: 'text')]
     private string $content;
 
@@ -30,26 +26,24 @@ class Message
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $role = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private User $user;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
     {
-        $this->createdAt = new \DateTimeImmutable();
+        // Removed the line $this->createdAt = new \DateTimeImmutable(); as it is now handled in the constructor
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getConversation(): ?Conversation
-    {
-        return $this->conversation;
-    }
-
-    public function setConversation(?Conversation $conversation): static
-    {
-        $this->conversation = $conversation;
-        return $this;
     }
 
     public function getContent(): string
@@ -87,6 +81,17 @@ class Message
     public function setRole(string $role): static
     {
         $this->role = $role;
+        return $this;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
         return $this;
     }
 }

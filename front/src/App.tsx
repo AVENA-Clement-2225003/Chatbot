@@ -1,119 +1,253 @@
-import React, { useState } from 'react';
-import { Send, Bot, User } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Send, Bot, User, LogOut } from 'lucide-react';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuthForm } from './components/AuthForm';
 
 interface Message {
-  id: number;
+  id: number | string;
   text: string;
   isBot: boolean;
   timestamp: Date;
 }
 
-function App() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      text: "Bonjour! Comment puis-je vous aider aujourd'hui?",
-      isBot: true,
-      timestamp: new Date()
+const API_URL = 'http://localhost:8000';
+
+const ChatComponent: React.FC = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { isAuthenticated, token, logout } = useAuth();
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchMessages();
     }
-  ]);
-  const [inputMessage, setInputMessage] = useState('');
+  }, [isAuthenticated]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const fetchMessages = async () => {
+    try {
+      console.log('[Chat] Fetching messages from API');
+      const response = await fetch(`${API_URL}/api/messages`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 401) {
+        console.log('[Chat] User is not authenticated');
+        setMessages([{
+          id: 'auth-error',
+          text: 'Please log in to use the chat.',
+          isBot: true,
+          timestamp: new Date()
+        }]);
+        return;
+      }
+
+      if (!response.ok) {
+        console.error('[Chat] Server returned error:', response.status);
+        throw new Error('Failed to fetch messages');
+      }
+
+      const data = await response.json();
+      console.log('[Chat] Received messages:', data);
+      setMessages(data.map((msg: any) => ({
+        ...msg,
+        timestamp: new Date(msg.timestamp)
+      })));
+    } catch (error) {
+      console.error('[Chat] Error fetching messages:', error);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputMessage.trim()) return;
+    if (!newMessage.trim() || isLoading) return;
 
-    // Add user message
-    const newMessage: Message = {
-      id: messages.length + 1,
-      text: inputMessage,
+    console.log('[Chat] Handling new message submission');
+    const messageText = newMessage.trim();
+    setNewMessage('');
+
+    // Add user message immediately
+    console.log('[Chat] Adding user message to chat');
+    const userMessage: Message = {
+      id: Date.now(),
+      text: messageText,
       isBot: false,
       timestamp: new Date()
     };
+    setMessages(prev => [...prev, userMessage]);
 
-    setMessages(prev => [...prev, newMessage]);
-    setInputMessage('');
+    // Send message to server
+    await sendMessage(messageText);
+  };
 
-    // Simulate bot response (this will be replaced with actual API call)
-    setTimeout(() => {
-      const botResponse: Message = {
-        id: messages.length + 2,
-        text: "Je traite votre message...",
+  const sendMessage = async (text: string) => {
+    try {
+      setIsLoading(true);
+      console.log('[Chat] Sending message:', text);
+      
+      const response = await fetch(`${API_URL}/api/messages`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      if (response.status === 401) {
+        console.log('[Chat] User is not authenticated');
+        setMessages(prev => [...prev, {
+          id: 'auth-error',
+          text: 'Please log in to use the chat.',
+          isBot: true,
+          timestamp: new Date()
+        }]);
+        return;
+      }
+
+      if (!response.ok) {
+        console.error('[Chat] Server returned error:', response.status);
+        throw new Error('Failed to send message');
+      }
+      
+      const data = await response.json();
+      console.log('[Chat] Received response:', data);
+      
+      // Add bot response to messages
+      if (data.botResponse) {
+        console.log('[Chat] Adding bot response to chat');
+        const botMessage: Message = {
+          id: data.botResponse.id,
+          text: data.botResponse.text,
+          isBot: true,
+          timestamp: new Date(data.botResponse.timestamp)
+        };
+        setMessages(prev => [...prev, botMessage]);
+      } else {
+        console.warn('[Chat] No bot response in data');
+      }
+    } catch (error) {
+      console.error('[Chat] Error sending message:', error);
+      setMessages(prev => [...prev, {
+        id: 'error',
+        text: 'An error occurred while sending your message. Please try again.',
         isBot: true,
         timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botResponse]);
-    }, 1000);
+      }]);
+    } finally {
+      setIsLoading(false);
+      console.log('[Chat] Message handling completed');
+    }
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm p-4">
-        <div className="max-w-4xl mx-auto flex items-center gap-2">
-          <Bot className="w-6 h-6 text-blue-600" />
-          <h1 className="text-xl font-semibold text-gray-800">Assistant IA</h1>
-        </div>
-      </header>
+    <div className="flex flex-col h-screen">
+      <div className="flex justify-between items-center bg-blue-600 text-white p-4">
+        <h1 className="text-xl font-bold">Chat Bot</h1>
+        <button
+          onClick={logout}
+          className="flex items-center space-x-2 bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded"
+        >
+          <LogOut size={18} />
+          <span>Logout</span>
+        </button>
+      </div>
 
-      {/* Chat Container */}
-      <div className="flex-1 max-w-4xl mx-auto w-full p-4 overflow-hidden flex flex-col">
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto mb-4 space-y-4">
-          {messages.map((message) => (
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.map((message, index) => (
+          <div
+            key={`${message.id}-${index}`}
+            className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
+          >
             <div
-              key={message.id}
-              className={`flex items-start gap-3 ${
-                message.isBot ? '' : 'flex-row-reverse'
+              className={`flex items-start space-x-2 max-w-[80%] ${
+                message.isBot ? 'flex-row' : 'flex-row-reverse'
               }`}
             >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                message.isBot ? 'bg-blue-100' : 'bg-green-100'
-              }`}>
-                {message.isBot ? (
-                  <Bot className="w-5 h-5 text-blue-600" />
-                ) : (
-                  <User className="w-5 h-5 text-green-600" />
-                )}
-              </div>
-              <div className={`flex flex-col max-w-[80%] ${
-                message.isBot ? 'items-start' : 'items-end'
-              }`}>
-                <div className={`rounded-lg p-3 ${
-                  message.isBot 
-                    ? 'bg-white shadow-sm' 
+              <div
+                className={`p-3 rounded-lg ${
+                  message.isBot
+                    ? 'bg-gray-200 text-gray-800'
                     : 'bg-blue-600 text-white'
-                }`}>
-                  <p className="text-sm">{message.text}</p>
-                </div>
-                <span className="text-xs text-gray-500 mt-1">
+                }`}
+              >
+                <p>{message.text}</p>
+                <p className="text-xs opacity-50 mt-1">
                   {message.timestamp.toLocaleTimeString()}
-                </span>
+                </p>
+              </div>
+              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                {message.isBot ? <Bot size={20} /> : <User size={20} />}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
 
-        {/* Input Form */}
-        <form onSubmit={handleSubmit} className="flex gap-2">
+      <form onSubmit={handleSubmit} className="p-4 border-t">
+        <div className="flex space-x-4">
           <input
             type="text"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="Écrivez votre message..."
-            className="flex-1 rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type your message..."
+            className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={!isAuthenticated || isLoading}
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2"
+            className={`px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center space-x-2 ${
+              (!isAuthenticated || isLoading) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+            }`}
+            disabled={!isAuthenticated || isLoading}
           >
-            <span>Envoyer</span>
-            <Send className="w-4 h-4" />
+            <Send size={20} />
+            <span>Send</span>
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
-}
+};
+
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+};
+
+const AppContent: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      {!isAuthenticated ? (
+        <div className="flex items-center justify-center min-h-screen p-4">
+          <AuthForm />
+        </div>
+      ) : (
+        <ChatComponent />
+      )}
+    </div>
+  );
+};
 
 export default App;
