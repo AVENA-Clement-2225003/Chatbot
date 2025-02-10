@@ -31,8 +31,14 @@ class ChatController extends AbstractController
                 );
             }
 
-            error_log("[ChatController] Fetching all messages");
-            $messages = $this->entityManager->getRepository(Message::class)->findBy([], ['createdAt' => 'ASC']);
+            $user = $this->getUser();
+            error_log("[ChatController] Fetching messages for user: " . $user->getUserIdentifier());
+            
+            // Filter messages by current user
+            $messages = $this->entityManager->getRepository(Message::class)->findBy(
+                ['user' => $user],
+                ['createdAt' => 'ASC']
+            );
 
             $formattedMessages = array_map(function(Message $message) {
                 return [
@@ -87,7 +93,8 @@ class ChatController extends AbstractController
             $message = new Message();
             $message->setContent($content)
                 ->setIsFromAi(false)
-                ->setRole('user');
+                ->setRole('user')
+                ->setUser($this->getUser());
 
             $this->entityManager->persist($message);
             $this->entityManager->flush();
@@ -99,7 +106,8 @@ class ChatController extends AbstractController
             $botMessage = new Message();
             $botMessage->setContent($botResponse)
                 ->setIsFromAi(true)
-                ->setRole('assistant');
+                ->setRole('assistant')
+                ->setUser($this->getUser());
 
             $this->entityManager->persist($botMessage);
             $this->entityManager->flush();
@@ -192,10 +200,10 @@ class ChatController extends AbstractController
     private function getCorsHeaders(): array
     {
         return [
-            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Origin' => 'http://localhost:5173',
             'Access-Control-Allow-Credentials' => 'true',
             'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers' => '*',
+            'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
             'Access-Control-Max-Age' => '3600'
         ];
     }

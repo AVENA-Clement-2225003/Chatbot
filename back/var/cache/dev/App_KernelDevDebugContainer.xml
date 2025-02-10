@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
   <parameters>
-    <parameter key="kernel.project_dir">/Users/delmasmathis/PhpstormProjects/Chatbot/back</parameter>
+    <parameter key="kernel.project_dir">/Users/mikado/WebstormProjects/Chatbot/back</parameter>
     <parameter key="kernel.environment">dev</parameter>
     <parameter key="kernel.runtime_environment">%env(default:kernel.environment:APP_RUNTIME_ENV)%</parameter>
     <parameter key="kernel.runtime_mode">%env(query_string:default:container.runtime_mode:APP_RUNTIME_MODE)%</parameter>
@@ -9,9 +9,9 @@
     <parameter key="kernel.runtime_mode.cli">%env(not:default:kernel.runtime_mode.web:)%</parameter>
     <parameter key="kernel.runtime_mode.worker">%env(bool:default::key:worker:default:kernel.runtime_mode:)%</parameter>
     <parameter key="kernel.debug">true</parameter>
-    <parameter key="kernel.build_dir">/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev</parameter>
-    <parameter key="kernel.cache_dir">/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev</parameter>
-    <parameter key="kernel.logs_dir">/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/log</parameter>
+    <parameter key="kernel.build_dir">/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev</parameter>
+    <parameter key="kernel.cache_dir">/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev</parameter>
+    <parameter key="kernel.logs_dir">/Users/mikado/WebstormProjects/Chatbot/back/var/log</parameter>
     <parameter key="kernel.bundles" type="collection">
       <parameter key="FrameworkBundle">Symfony\Bundle\FrameworkBundle\FrameworkBundle</parameter>
       <parameter key="DoctrineBundle">Doctrine\Bundle\DoctrineBundle\DoctrineBundle</parameter>
@@ -26,43 +26,43 @@
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
-        <parameter key="path">/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/symfony/framework-bundle</parameter>
+        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/framework-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\FrameworkBundle</parameter>
       </parameter>
       <parameter key="DoctrineBundle" type="collection">
-        <parameter key="path">/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/doctrine/doctrine-bundle</parameter>
+        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/doctrine/doctrine-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\DoctrineBundle</parameter>
       </parameter>
       <parameter key="DoctrineMigrationsBundle" type="collection">
-        <parameter key="path">/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/doctrine/doctrine-migrations-bundle</parameter>
+        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/doctrine/doctrine-migrations-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\MigrationsBundle</parameter>
       </parameter>
       <parameter key="SecurityBundle" type="collection">
-        <parameter key="path">/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/symfony/security-bundle</parameter>
+        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/security-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\SecurityBundle</parameter>
       </parameter>
       <parameter key="MakerBundle" type="collection">
-        <parameter key="path">/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/symfony/maker-bundle</parameter>
+        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/maker-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\MakerBundle</parameter>
       </parameter>
       <parameter key="DoctrineFixturesBundle" type="collection">
-        <parameter key="path">/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/doctrine/doctrine-fixtures-bundle</parameter>
+        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/doctrine/doctrine-fixtures-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\FixturesBundle</parameter>
       </parameter>
       <parameter key="SymfonyCastsVerifyEmailBundle" type="collection">
-        <parameter key="path">/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/symfonycasts/verify-email-bundle/src</parameter>
+        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfonycasts/verify-email-bundle/src</parameter>
         <parameter key="namespace">SymfonyCasts\Bundle\VerifyEmail</parameter>
       </parameter>
       <parameter key="NelmioCorsBundle" type="collection">
-        <parameter key="path">/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/nelmio/cors-bundle</parameter>
+        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/nelmio/cors-bundle</parameter>
         <parameter key="namespace">Nelmio\CorsBundle</parameter>
       </parameter>
       <parameter key="ApiPlatformBundle" type="collection">
-        <parameter key="path">/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/api-platform/symfony/Bundle</parameter>
+        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/api-platform/symfony/Bundle</parameter>
         <parameter key="namespace">ApiPlatform\Symfony\Bundle</parameter>
       </parameter>
       <parameter key="LexikJWTAuthenticationBundle" type="collection">
-        <parameter key="path">/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/lexik/jwt-authentication-bundle</parameter>
+        <parameter key="path">/Users/mikado/WebstormProjects/Chatbot/back/vendor/lexik/jwt-authentication-bundle</parameter>
         <parameter key="namespace">Lexik\Bundle\JWTAuthenticationBundle</parameter>
       </parameter>
     </parameter>
@@ -105,17 +105,17 @@
     <parameter key="asset.request_context.base_path">null</parameter>
     <parameter key="asset.request_context.secure">null</parameter>
     <parameter key="debug.error_handler.throw_at">-1</parameter>
-    <parameter key="debug.container.dump">/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/App_KernelDevDebugContainer.xml</parameter>
+    <parameter key="debug.container.dump">/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/App_KernelDevDebugContainer.xml</parameter>
     <parameter key="router.request_context.host">localhost</parameter>
     <parameter key="router.request_context.scheme">http</parameter>
     <parameter key="router.request_context.base_url"></parameter>
     <parameter key="router.resource">kernel::loadRoutes</parameter>
-    <parameter key="router.cache_dir">/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev</parameter>
+    <parameter key="router.cache_dir">/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev</parameter>
     <parameter key="request_listener.http_port">80</parameter>
     <parameter key="request_listener.https_port">443</parameter>
-    <parameter key="serializer.mapping.cache.file">/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/serialization.php</parameter>
+    <parameter key="serializer.mapping.cache.file">/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/serialization.php</parameter>
     <parameter key=".serializer.named_serializers" type="collection"/>
-    <parameter key="cache.prefix.seed">_/Users/delmasmathis/PhpstormProjects/Chatbot/back.App_KernelDevDebugContainer</parameter>
+    <parameter key="cache.prefix.seed">_/Users/mikado/WebstormProjects/Chatbot/back.App_KernelDevDebugContainer</parameter>
     <parameter key="session.metadata.storage_key">_sf2_meta</parameter>
     <parameter key="session.storage.options" type="collection">
       <parameter key="cache_limiter" type="string">0</parameter>
@@ -130,7 +130,7 @@
     <parameter key="form.type_extension.csrf.field_attr" type="collection">
       <parameter key="data-controller">csrf-protection</parameter>
     </parameter>
-    <parameter key="validator.mapping.cache.file">/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/validation.php</parameter>
+    <parameter key="validator.mapping.cache.file">/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/validation.php</parameter>
     <parameter key="validator.translation_domain">validators</parameter>
     <parameter key="data_collector.templates" type="collection"/>
     <parameter key="doctrine.dbal.configuration.class">Doctrine\DBAL\Configuration</parameter>
@@ -205,7 +205,7 @@
     <parameter key="doctrine.orm.second_level_cache.regions_configuration.class">Doctrine\ORM\Cache\RegionsConfiguration</parameter>
     <parameter key="doctrine.orm.auto_generate_proxy_classes">true</parameter>
     <parameter key="doctrine.orm.enable_lazy_ghost_objects">true</parameter>
-    <parameter key="doctrine.orm.proxy_dir">/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/doctrine/orm/Proxies</parameter>
+    <parameter key="doctrine.orm.proxy_dir">/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/doctrine/orm/Proxies</parameter>
     <parameter key="doctrine.orm.proxy_namespace">Proxies</parameter>
     <parameter key="doctrine.migrations.preferred_em">null</parameter>
     <parameter key="doctrine.migrations.preferred_connection">null</parameter>
@@ -224,9 +224,14 @@
       <parameter key="^/" type="collection"/>
     </parameter>
     <parameter key="nelmio_cors.defaults" type="collection">
-      <parameter key="allow_origin">true</parameter>
+      <parameter key="allow_origin" type="collection">
+        <parameter>http://localhost:5173</parameter>
+      </parameter>
       <parameter key="allow_credentials">true</parameter>
-      <parameter key="allow_headers">true</parameter>
+      <parameter key="allow_headers" type="collection">
+        <parameter>content-type</parameter>
+        <parameter>authorization</parameter>
+      </parameter>
       <parameter key="allow_private_network">false</parameter>
       <parameter key="expose_headers" type="collection">
         <parameter>Link</parameter>
@@ -353,8 +358,8 @@
       </parameter>
     </parameter>
     <parameter key="api_platform.resource_class_directories" type="collection">
-      <parameter>/Users/delmasmathis/PhpstormProjects/Chatbot/back/src/ApiResource</parameter>
-      <parameter>/Users/delmasmathis/PhpstormProjects/Chatbot/back/src/Entity</parameter>
+      <parameter>/Users/mikado/WebstormProjects/Chatbot/back/src/ApiResource</parameter>
+      <parameter>/Users/mikado/WebstormProjects/Chatbot/back/src/Entity</parameter>
     </parameter>
     <parameter key="api_platform.class_name_resources" type="collection">
       <parameter>ApiPlatform\State\ApiResource\Error</parameter>
@@ -586,7 +591,7 @@
       </argument>
     </service>
     <service id="http_cache.store" class="Symfony\Component\HttpKernel\HttpCache\Store">
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/http_cache</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/http_cache</argument>
     </service>
     <service id="url_helper" class="Symfony\Component\HttpFoundation\UrlHelper">
       <argument type="service" id="request_stack"/>
@@ -596,7 +601,7 @@
       <tag name="container.no_preload"/>
       <argument type="tagged_iterator" tag="kernel.cache_warmer"/>
       <argument>true</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/App_KernelDevDebugContainerDeprecations.log</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/App_KernelDevDebugContainerDeprecations.log</argument>
     </service>
     <service id="cache_clearer" class="Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer">
       <argument type="tagged_iterator" tag="kernel.cache_clearer"/>
@@ -837,7 +842,7 @@
       </argument>
       <argument>UTF-8</argument>
       <argument type="service" id="debug.file_link_formatter" on-invalid="null"/>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back</argument>
       <argument type="service">
         <service>
           <argument type="service" id="request_stack"/>
@@ -873,7 +878,7 @@
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
       <argument type="service" id="filesystem"/>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back</argument>
       <call method="setName">
         <argument>assets:install</argument>
       </call>
@@ -1071,7 +1076,7 @@
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
       <argument>dev</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back</argument>
       <call method="setName">
         <argument>debug:dotenv</argument>
       </call>
@@ -1282,9 +1287,9 @@
     <service id="cache.app" class="Symfony\Component\Cache\Adapter\FilesystemAdapter" public="true">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>RP-oE5kqNQ</argument>
+      <argument>bjpha8JY6a</argument>
       <argument>0</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/app</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="logger" on-invalid="ignore"/>
@@ -1297,40 +1302,40 @@
     <service id="cache.system" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="true">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>jDJtEgFbf6</argument>
+      <argument>1gTrPqtfmz</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.validator" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>qcw35YwIls</argument>
+      <argument>fY+uvcd+8r</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.serializer" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>Y92HvugtHo</argument>
+      <argument>uaqo+Dq7a+</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.property_info" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>ecWnT676Gd</argument>
+      <argument>culyPfJocK</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -1340,7 +1345,7 @@
       <argument></argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -1359,7 +1364,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/app</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="logger" on-invalid="ignore"/>
@@ -2160,7 +2165,7 @@
       <argument type="service" id=".service_locator.RTjHFcp.router.default"/>
       <argument>kernel::loadRoutes</argument>
       <argument type="collection">
-        <argument key="cache_dir">/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev</argument>
+        <argument key="cache_dir">/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev</argument>
         <argument key="debug">true</argument>
         <argument key="generator_class">Symfony\Component\Routing\Generator\CompiledUrlGenerator</argument>
         <argument key="generator_dumper_class">Symfony\Component\Routing\Generator\Dumper\CompiledUrlGeneratorDumper</argument>
@@ -2209,7 +2214,7 @@
       <argument type="service" id="request_stack"/>
       <argument type="service" id="router.request_context" on-invalid="ignore"/>
       <argument type="service" id="logger" on-invalid="ignore"/>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back</argument>
       <argument>true</argument>
     </service>
     <service id="Symfony\Bundle\FrameworkBundle\Controller\RedirectController" class="Symfony\Bundle\FrameworkBundle\Controller\RedirectController" public="true">
@@ -2236,7 +2241,7 @@
       <argument type="service" id="property_info.reflection_extractor" on-invalid="null"/>
     </service>
     <service id="secrets.vault" class="Symfony\Bundle\FrameworkBundle\Secrets\SodiumVault">
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/config/secrets/%env(default:kernel.environment:APP_RUNTIME_ENV)%</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/config/secrets/%env(default:kernel.environment:APP_RUNTIME_ENV)%</argument>
       <argument type="service" id="secrets.decryption_key" on-invalid="ignore"/>
       <argument>APP_SECRET</argument>
     </service>
@@ -2249,7 +2254,7 @@
       <argument>base64:default::SYMFONY_DECRYPTION_SECRET</argument>
     </service>
     <service id="secrets.local_vault" class="Symfony\Bundle\FrameworkBundle\Secrets\DotenvVault">
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/.env.dev.local</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/.env.dev.local</argument>
     </service>
     <service id="serializer" class="Symfony\Component\Serializer\Serializer">
       <argument type="collection">
@@ -2270,6 +2275,7 @@
         <argument type="service" id="api_platform.serializer.normalizer.item"/>
         <argument type="service" id="serializer.normalizer.datetime"/>
         <argument type="service" id="serializer.normalizer.constraint_violation_list"/>
+        <argument type="service" id="serializer.normalizer.mime_message"/>
         <argument type="service" id="serializer.normalizer.datetimezone"/>
         <argument type="service" id="serializer.normalizer.dateinterval"/>
         <argument type="service" id="serializer.normalizer.form_error"/>
@@ -2306,6 +2312,11 @@
       </argument>
       <argument type="service" id="serializer.name_converter.metadata_aware"/>
     </service>
+    <service id="serializer.normalizer.mime_message" class="Symfony\Component\Serializer\Normalizer\MimeMessageNormalizer">
+      <tag name="serializer.normalizer" built_in="1" priority="-915"/>
+      <tag name="serializer.normalizer.default" priority="-915"/>
+      <argument type="service" id="serializer.normalizer.property"/>
+    </service>
     <service id="serializer.normalizer.datetimezone" class="Symfony\Component\Serializer\Normalizer\DateTimeZoneNormalizer">
       <tag name="serializer.normalizer" built_in="1" priority="-915"/>
       <tag name="serializer.normalizer.default" priority="-915"/>
@@ -2320,7 +2331,7 @@
     <service id="serializer.normalizer.data_uri" class="Symfony\Component\Serializer\Normalizer\DataUriNormalizer">
       <tag name="serializer.normalizer" built_in="1" priority="-920"/>
       <tag name="serializer.normalizer.default" priority="-920"/>
-      <argument>null</argument>
+      <argument type="service" id="mime_types" on-invalid="null"/>
     </service>
     <service id="serializer.normalizer.datetime" class="Symfony\Component\Serializer\Normalizer\DateTimeNormalizer">
       <tag name="serializer.normalizer" built_in="1" priority="-910"/>
@@ -2406,10 +2417,10 @@
           </service>
         </argument>
       </argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/serialization.php</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/serialization.php</argument>
     </service>
     <service id="serializer.mapping.cache.symfony" class="Psr\Cache\CacheItemPoolInterface">
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/serialization.php</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/serialization.php</argument>
       <argument type="service" id="cache.serializer"/>
       <factory class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" method="create"/>
     </service>
@@ -2622,7 +2633,7 @@
       <argument>true</argument>
     </service>
     <service id="session.storage.factory.mock_file" class="Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorageFactory">
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/sessions</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/sessions</argument>
       <argument>MOCKSESSID</argument>
       <argument type="service">
         <service class="Symfony\Component\HttpFoundation\Session\Storage\MetadataBag">
@@ -2800,7 +2811,7 @@
       </call>
       <call method="addXmlMappings">
         <argument type="collection">
-          <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/vendor/symfony/form/Resources/config/validation.xml</argument>
+          <argument>/Users/mikado/WebstormProjects/Chatbot/back/vendor/symfony/form/Resources/config/validation.xml</argument>
         </argument>
       </call>
       <call method="enableAttributeMapping"/>
@@ -2823,10 +2834,10 @@
     <service id="validator.mapping.cache_warmer" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\ValidatorCacheWarmer">
       <tag name="kernel.cache_warmer"/>
       <argument type="service" id="validator.builder"/>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/validation.php</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/validation.php</argument>
     </service>
     <service id="validator.mapping.cache.adapter" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" constructor="create">
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/validation.php</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/validation.php</argument>
       <argument type="service" id="cache.validator"/>
     </service>
     <service id="validator.validator_factory" class="Symfony\Component\Validator\ContainerConstraintValidatorFactory">
@@ -3109,10 +3120,10 @@
     <service id="cache.validator_expression_language" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="true">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>wyqKcG4tzd</argument>
+      <argument>gj7YDSyD2G</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -3142,6 +3153,11 @@
       <argument type="service" id="property_info"/>
       <argument type="service" id="property_info"/>
       <argument>null</argument>
+    </service>
+    <service id="mime_types" class="Symfony\Component\Mime\MimeTypes">
+      <call method="setDefault">
+        <argument type="service" id="mime_types"/>
+      </call>
     </service>
     <service id="data_collector.doctrine" class="Doctrine\Bundle\DoctrineBundle\DataCollector\DoctrineDataCollector">
       <tag name="data_collector" template="@Doctrine/Collector/db.html.twig" id="db" priority="250"/>
@@ -3329,7 +3345,7 @@
         <argument key="default">600</argument>
       </argument>
     </service>
-    <service id=".1_ServiceLocator~F_HdeU8" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".1_ServiceLocator~u9gUmhv" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <argument type="collection"/>
     </service>
     <service id="doctrine.orm.proxy_cache_warmer" class="Symfony\Bridge\Doctrine\CacheWarmer\ProxyCacheWarmer">
@@ -3537,7 +3553,7 @@
         <argument type="service" id=".doctrine.orm.default_metadata_driver"/>
       </call>
       <call method="setProxyDir">
-        <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/doctrine/orm/Proxies</argument>
+        <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/doctrine/orm/Proxies</argument>
       </call>
       <call method="setProxyNamespace">
         <argument>Proxies</argument>
@@ -3580,7 +3596,7 @@
     </service>
     <service id="doctrine.orm.default_attribute_metadata_driver" class="Doctrine\ORM\Mapping\Driver\AttributeDriver">
       <argument type="collection">
-        <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/src/Entity</argument>
+        <argument>/Users/mikado/WebstormProjects/Chatbot/back/src/Entity</argument>
       </argument>
       <argument>true</argument>
     </service>
@@ -3642,7 +3658,7 @@
     <service id="doctrine.migrations.configuration" class="Doctrine\Migrations\Configuration\Configuration">
       <call method="addMigrationsDirectory">
         <argument>DoctrineMigrations</argument>
-        <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/migrations</argument>
+        <argument>/Users/mikado/WebstormProjects/Chatbot/back/migrations</argument>
       </call>
       <call method="setAllOrNothing">
         <argument>false</argument>
@@ -3980,10 +3996,10 @@
     <service id="cache.security_expression_language" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>ap8LqKj9e+</argument>
+      <argument>Jly864Zh6Z</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -3999,10 +4015,10 @@
     <service id="cache.security_is_granted_attribute_expression_language" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="true">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>SgFyUK3PoO</argument>
+      <argument>mTM3w6WQiC</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -4012,10 +4028,10 @@
     <service id="cache.security_is_csrf_token_valid_attribute_expression_language" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="true">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>o0cLp4PEVd</argument>
+      <argument>U0cpEYR9LM</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -4710,10 +4726,10 @@
     <service id="cache.security_token_verifier" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>H0A4rDfM79</argument>
+      <argument>+ZR0JrVaIy</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -4875,7 +4891,7 @@
       <argument type="service" id="filesystem"/>
       <argument type="service" id="maker.autoloader_util"/>
       <argument type="service" id="maker.file_link_formatter"/>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back</argument>
       <argument>null</argument>
     </service>
     <service id="maker.autoloader_finder" class="Symfony\Bundle\MakerBundle\Util\ComposerAutoloaderFinder">
@@ -5053,7 +5069,7 @@
     </service>
     <service id="maker.maker.make_migration" class="Symfony\Bundle\MakerBundle\Maker\MakeMigration">
       <tag name="maker.command"/>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back</argument>
       <argument type="service" id="maker.file_link_formatter"/>
     </service>
     <service id="maker.maker.make_stimulus_controller" class="Symfony\Bundle\MakerBundle\Maker\MakeStimulusController">
@@ -5260,10 +5276,10 @@
     <service id="api_platform.cache.route_name_resolver" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>8spmcy-fJ4</argument>
+      <argument>kbfsByooVD</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -5398,10 +5414,10 @@
     <service id="api_platform.cache.metadata.resource" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>5Y0fQBwAVW</argument>
+      <argument>1W2vbwQhye</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -5475,10 +5491,10 @@
     <service id="api_platform.cache.metadata.property" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>+hpE-Z8AK1</argument>
+      <argument>pxFsA0UK6b</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -5551,10 +5567,10 @@
     <service id="api_platform.cache.metadata.resource_collection" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>wHv2bZOZJz</argument>
+      <argument>POULg6pScv</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -5612,15 +5628,15 @@
     <service id="api_platform.json_schema.definition_name_factory" class="ApiPlatform\JsonSchema\DefinitionNameFactory">
       <argument>%api_platform.jsonschema_formats%</argument>
     </service>
-    <service id=".2_ObjectNormalizer~d2zDl7k" class="Symfony\Component\Serializer\Normalizer\ObjectNormalizer">
+    <service id=".2_ObjectNormalizer~tmvhTTt" class="Symfony\Component\Serializer\Normalizer\ObjectNormalizer">
       <argument>null</argument>
       <argument>null</argument>
       <argument type="service" id="property_accessor"/>
       <argument type="service" id="property_info"/>
     </service>
-    <service id=".1_Serializer~d2zDl7k" class="Symfony\Component\Serializer\Serializer">
+    <service id=".1_Serializer~tmvhTTt" class="Symfony\Component\Serializer\Serializer">
       <argument type="collection">
-        <argument type="service" id=".2_ObjectNormalizer~d2zDl7k"/>
+        <argument type="service" id=".2_ObjectNormalizer~tmvhTTt"/>
       </argument>
       <argument type="collection">
         <argument type="service" id="serializer.encoder.json"/>
@@ -5673,10 +5689,10 @@
     <service id="api_platform.cache.openapi" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>UNXQvZXBvI</argument>
+      <argument>8iBBkqJyUz</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -6172,8 +6188,8 @@
       <argument type="collection"/>
     </service>
     <service id="lexik_jwt_authentication.key_loader.raw" class="Lexik\Bundle\JWTAuthenticationBundle\Services\KeyLoader\RawKeyLoader">
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/config/jwt/private.pem</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/config/jwt/public.pem</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/config/jwt/private.pem</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/config/jwt/public.pem</argument>
       <argument>%env(JWT_PASSPHRASE)%</argument>
       <argument type="collection"/>
     </service>
@@ -6281,8 +6297,8 @@
       <tag name="console.command" command="lexik:jwt:generate-keypair"/>
       <tag name="container.no_preload"/>
       <argument type="service" id="filesystem"/>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/config/jwt/private.pem</argument>
-      <argument>/Users/delmasmathis/PhpstormProjects/Chatbot/back/config/jwt/public.pem</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/config/jwt/private.pem</argument>
+      <argument>/Users/mikado/WebstormProjects/Chatbot/back/config/jwt/public.pem</argument>
       <argument>%env(JWT_PASSPHRASE)%</argument>
       <argument>RS256</argument>
       <call method="setName">
@@ -7563,7 +7579,7 @@
       <argument type="service" id="serializer.mapping.chain_loader"/>
     </service>
     <service id="api_platform.openapi.normalizer.api_gateway.inner" class="ApiPlatform\OpenApi\Serializer\OpenApiNormalizer">
-      <argument type="service" id=".1_Serializer~d2zDl7k"/>
+      <argument type="service" id=".1_Serializer~tmvhTTt"/>
     </service>
     <service id="api_platform.openapi.normalizer.legacy.inner" class="ApiPlatform\OpenApi\Serializer\ApiGatewayNormalizer">
       <tag name="container.decorator" id="api_platform.openapi.normalizer" inner="api_platform.openapi.normalizer.api_gateway.inner"/>
@@ -8425,6 +8441,8 @@
     <service id="form.choice_list_factory" alias="form.choice_list_factory.cached"/>
     <service id="Symfony\Component\Validator\Validator\ValidatorInterface" alias="validator"/>
     <service id="validator.mapping.class_metadata_factory" alias="validator"/>
+    <service id="Symfony\Component\Mime\MimeTypesInterface" alias="mime_types"/>
+    <service id="Symfony\Component\Mime\MimeTypeGuesserInterface" alias="mime_types"/>
     <service id="Doctrine\DBAL\Connection" alias="doctrine.dbal.default_connection"/>
     <service id="Doctrine\Persistence\ManagerRegistry" alias="doctrine"/>
     <service id="Doctrine\Common\Persistence\ManagerRegistry" alias="doctrine"/>
