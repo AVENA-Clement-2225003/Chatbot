@@ -10,7 +10,7 @@ interface Message {
   timestamp: Date;
 }
 
-const API_URL = 'http://localhost:8000';
+const API_URL = 'http://localhost:8001';
 
 const ChatComponent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
