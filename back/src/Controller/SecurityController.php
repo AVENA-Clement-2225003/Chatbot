@@ -12,8 +12,24 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Security Controller
+ * 
+ * Handles user authentication and security-related operations.
+ * Provides endpoints for user login and logout functionality
+ * using JWT token-based authentication.
+ *
+ * @author AVENA DELMAS KHADRAOUI NGUYEN
+ */
 class SecurityController extends AbstractController
 {
+    /**
+     * SecurityController constructor
+     * 
+     * @param EntityManagerInterface $entityManager For database operations
+     * @param UserPasswordHasherInterface $passwordHasher For password validation
+     * @param JWTTokenManagerInterface $jwtManager For JWT token operations
+     */
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $passwordHasher,
@@ -21,6 +37,16 @@ class SecurityController extends AbstractController
     ) {
     }
 
+    /**
+     * Authenticates a user and provides a JWT token
+     * 
+     * Validates user credentials and generates a JWT token for
+     * authenticated access to protected endpoints.
+     *
+     * @param Request $request The HTTP request containing login credentials
+     * 
+     * @return JsonResponse Success response with JWT token or error message
+     */
     #[Route('/api/login', name: 'app_login', methods: ['POST'])]
     public function login(Request $request): JsonResponse
     {
@@ -44,6 +70,14 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    /**
+     * Handles user logout
+     * 
+     * Note: With JWT, actual logout is handled client-side by removing the token.
+     * This endpoint provides a standardized way to handle logout requests.
+     *
+     * @return JsonResponse Success response indicating logout
+     */
     #[Route('/api/logout', name: 'app_logout', methods: ['POST'])]
     public function logout(): JsonResponse
     {

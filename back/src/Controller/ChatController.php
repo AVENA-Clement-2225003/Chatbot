@@ -12,14 +12,40 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * Chat Controller
+ * 
+ * This controller handles all chat-related operations including:
+ * - Retrieving message history
+ * - Sending new messages
+ * - Interacting with the AI assistant
+ * - Managing chat sessions
+ *
+ * All endpoints require user authentication.
+ * 
+ * @author AVENA DELMAS KHADRAOUI NGUYEN
+ */
 #[Route('/api', name: 'api_')]
 class ChatController extends AbstractController
 {
+    /**
+     * ChatController constructor.
+     * 
+     * @param EntityManagerInterface $entityManager For database operations
+     * @param HttpClientInterface $httpClient For making HTTP requests to AI service
+     */
     public function __construct(
         private EntityManagerInterface $entityManager,
         private HttpClientInterface $httpClient
     ) {}
 
+    /**
+     * Retrieves all messages for the authenticated user
+     * 
+     * @return JsonResponse List of messages or error response
+     * 
+     * @throws AccessDeniedException If user is not authenticated
+     */
     #[Route('/messages', name: 'get_messages', methods: ['GET'])]
     public function getMessages(): JsonResponse
     {
@@ -63,6 +89,15 @@ class ChatController extends AbstractController
         }
     }
 
+    /**
+     * Sends a new message from the authenticated user
+     * 
+     * @param Request $request The incoming request with message data
+     * 
+     * @return JsonResponse Success response with bot response or error
+     * 
+     * @throws AccessDeniedException If user is not authenticated
+     */
     #[Route('/messages', name: 'send_message', methods: ['POST'])]
     public function sendMessage(Request $request): JsonResponse
     {
@@ -142,6 +177,11 @@ class ChatController extends AbstractController
         }
     }
 
+    /**
+     * Handles preflight requests for CORS
+     * 
+     * @return Response Empty response with CORS headers
+     */
     #[Route('/messages', name: 'messages_preflight', methods: ['OPTIONS'])]
     public function handlePreflightRequest(): Response
     {
@@ -152,6 +192,15 @@ class ChatController extends AbstractController
         );
     }
 
+    /**
+     * Generates a bot response to a given user message
+     * 
+     * @param string $message The user's message
+     * 
+     * @return string The bot's response
+     * 
+     * @throws \Exception If AI API request fails
+     */
     private function generateBotResponse(string $message): string
     {
         try {
@@ -193,6 +242,11 @@ class ChatController extends AbstractController
         }
     }
 
+    /**
+     * Returns CORS headers for API responses
+     * 
+     * @return array CORS headers
+     */
     private function getCorsHeaders(): array
     {
         return [

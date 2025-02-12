@@ -12,8 +12,24 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Registration Controller
+ * 
+ * Handles user registration functionality.
+ * Provides endpoints for creating new user accounts with proper validation
+ * and security measures.
+ *
+ * @author AVENA DELMAS KHADRAOUI NGUYEN
+ */
 class RegistrationController extends AbstractController
 {
+    /**
+     * RegistrationController constructor
+     * 
+     * @param UserPasswordHasherInterface $userPasswordHasher Service for hashing user passwords
+     * @param EntityManagerInterface $entityManager For database operations
+     * @param JWTTokenManagerInterface $jwtManager For generating JWT tokens
+     */
     public function __construct(
         private UserPasswordHasherInterface $userPasswordHasher,
         private EntityManagerInterface $entityManager,
@@ -21,6 +37,19 @@ class RegistrationController extends AbstractController
     ) {
     }
 
+    /**
+     * Registers a new user
+     * 
+     * Validates the email and password, checks for existing users,
+     * and creates a new user account with a hashed password.
+     * Returns a JWT token upon successful registration.
+     *
+     * @param Request $request The HTTP request containing registration data
+     * 
+     * @return JsonResponse Success response with JWT token or error message
+     * 
+     * @throws \Exception If there's an error during user creation
+     */
     #[Route('/api/register', name: 'app_register', methods: ['POST'])]
     public function register(Request $request): JsonResponse
     {
