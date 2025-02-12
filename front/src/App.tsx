@@ -3,6 +3,13 @@ import { Send, Bot, User, LogOut } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { AuthForm } from './components/AuthForm';
 
+/**
+ * A message sent by a user or the bot in the chat.
+ * @property {number|string} id - a unique identifier for the message
+ * @property {string} text - the text content of the message
+ * @property {boolean} isBot - whether the message was sent by the bot or not
+ * @property {Date} timestamp - the timestamp the message was sent
+ */
 interface Message {
   id: number | string;
   text: string;
