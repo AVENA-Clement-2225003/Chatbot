@@ -201,3 +201,12 @@ symfony serve
 ```shell
 uvicorn main:app --host 0.0.0.0 --port 8001
 ```
+
+## API Platform
+
+### Commande 
+```shell
+php bin/console lexik:jwt:generate-keypair 
+```
+
+Pour accéder à l'API Platform, il suffit de se rendre sur `http://localhost:8000/api/docs`
