@@ -6,6 +6,7 @@ use App\Repository\ChatSessionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 /**
  * ChatSession Entity
@@ -18,6 +19,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @author AVENA DELMAS KHADRAOUI NGUYEN
  */
 #[ORM\Entity(repositoryClass: ChatSessionRepository::class)]
+#[ApiResource]
+
 class ChatSession
 {
     /**
