@@ -6,7 +6,10 @@
         "symfony/runtime": "^7.2",
         "doctrine/annotations": "^2.0",
         "symfony/password-hasher": "^7.2",
-        "symfonycasts/verify-email-bundle": "^1.17"
+        "symfonycasts/verify-email-bundle": "^1.17",
+        "symfony/translation": "^7.2",
+        "symfony/twig-bridge": "^7.2",
+        "symfony/translation-contracts": "^3.5"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.62"

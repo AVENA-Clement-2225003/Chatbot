@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Bot, User, LogOut } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { AuthForm } from './components/AuthForm';
+import AuthForm from './components/AuthForm';
+import { useTranslation } from 'react-i18next';
 
 interface Message {
   id: number | string;
@@ -70,6 +71,29 @@ const ChatComponent: React.FC = () => {
     } catch (error) {
       console.error('[Chat] Error fetching messages:', error);
     }
+  };
+
+  const LanguageSwitcher: React.FC = () => {
+    const { i18n } = useTranslation();
+
+    return (
+        <div className="p-4 text-right">
+          <button
+              onClick={() => i18n.changeLanguage(i18n.language === 'fr' ? 'en' : 'fr')}
+              className="bg-gray-200 px-4 py-2 rounded"
+          >
+            🌍 {i18n.language === 'fr' ? 'Switch to English' : 'Passer en français'}
+          </button>
+        </div>
+    );
+  };
+  const AppContent: React.FC = () => {
+    return (
+        <div className="min-h-screen bg-gray-100">
+          <LanguageSwitcher />
+          <AuthForm />
+        </div>
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
